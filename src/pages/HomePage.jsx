@@ -22,7 +22,6 @@ function parseMinutes(label) {
 
 export function HomePage() {
   useDocumentTitle('Farm Schedule')
-  const { showToast } = useToast()
   const [selected, setSelected] = useState(() => new Date(2026, 7, 17))
 
   const selectedKey = toDateKey(selected)

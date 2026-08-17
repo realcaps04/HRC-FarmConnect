@@ -46,7 +46,7 @@ export function AppShell() {
           className={cn(
             'mx-auto w-full pb-[calc(6rem+env(safe-area-inset-bottom))]',
             isHome
-              ? 'max-w-[430px] overflow-hidden lg:max-w-lg lg:rounded-[32px] lg:shadow-[0_12px_40px_rgb(17_17_17/0.08)]'
+              ? 'max-w-[430px] overflow-hidden lg:mt-6 lg:max-w-lg lg:rounded-[32px] lg:shadow-[0_12px_40px_rgb(17_17_17/0.08)]'
               : 'max-w-5xl px-4 pt-5 lg:px-8 lg:pb-12 lg:pt-8',
           )}
         >

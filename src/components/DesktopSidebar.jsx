@@ -32,8 +32,8 @@ function SidebarLink({ to, end, icon: Icon, label }) {
       end={end}
       className={({ isActive }) =>
         cn(
-          'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
-          isActive ? 'bg-hrc-50 text-hrc-900' : 'text-ink-700 hover:bg-sand-50 hover:text-ink-950',
+          'flex items-center gap-3 rounded-2xl px-3 py-2.5 text-sm font-medium transition-colors',
+          isActive ? 'bg-hrc-800 text-white' : 'text-ink-700 hover:bg-sand-50 hover:text-ink-950',
         )
       }
     >

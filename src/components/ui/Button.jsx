@@ -29,7 +29,7 @@ export function Button({
     <Component
       type={Component === 'button' ? type : undefined}
       className={cn(
-    'inline-flex items-center justify-center gap-2 rounded-full font-medium transition-colors duration-150 disabled:opacity-50',
+        'inline-flex items-center justify-center gap-2 rounded-full font-medium transition-colors duration-150 disabled:opacity-50',
         variants[variant],
         sizes[size],
         className,
