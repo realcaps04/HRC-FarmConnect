@@ -1,19 +1,27 @@
+import { useState } from 'react'
 import { RefreshCw } from 'lucide-react'
 import { Button } from './ui/Button'
 import { Modal } from './ui/Modal'
 import { useAppUpdate } from '../hooks/useAppUpdate'
 import { reloadToUpdate } from '../utils/appVersion'
 
-export function UpdatePrompt({ required = false }) {
+export function UpdatePrompt({ required = false, onDismiss }) {
   const { available, dismiss } = useAppUpdate()
-  const open = required || available
+  const [closed, setClosed] = useState(false)
+  const open = !closed && (required || available)
+
+  const close = () => {
+    setClosed(true)
+    dismiss()
+    onDismiss?.()
+  }
 
   return (
     <Modal
       open={open}
-      onClose={required ? undefined : dismiss}
+      onClose={close}
       title={required ? 'Please update to continue' : 'Update available'}
-      dismissible={!required}
+      dismissible
     >
       <div className="flex gap-3">
         <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-hrc-50 text-hrc-800">
@@ -26,11 +34,9 @@ export function UpdatePrompt({ required = false }) {
         </p>
       </div>
       <div className="mt-5 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-        {required ? null : (
-          <Button variant="secondary" className="w-full sm:w-auto" onClick={dismiss}>
-            Continue
-          </Button>
-        )}
+        <Button variant="secondary" className="w-full sm:w-auto" onClick={close}>
+          Continue
+        </Button>
         <Button className="w-full bg-hrc-800 hover:bg-hrc-900 sm:w-auto" onClick={reloadToUpdate}>
           Update now
         </Button>

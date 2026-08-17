@@ -5,29 +5,32 @@ import { isChunkLoadError } from '../utils/appVersion'
 export class ErrorBoundary extends Component {
   constructor(props) {
     super(props)
-    this.state = { requiredUpdate: false }
+    this.state = { requiredUpdate: false, error: null }
   }
 
   static getDerivedStateFromError(error) {
+    if (import.meta.env.DEV) {
+      return { requiredUpdate: false, error: null }
+    }
     if (isChunkLoadError(error)) {
-      return { requiredUpdate: true }
+      return { requiredUpdate: true, error: null }
     }
     return { requiredUpdate: false, error }
   }
 
   componentDidCatch(error) {
-    if (isChunkLoadError(error)) {
-      this.setState({ requiredUpdate: true })
+    if (import.meta.env.DEV) {
+      console.warn('HRC FarmConnect recovered from a render error.', error)
     }
   }
 
-  render() {
-    if (this.state.requiredUpdate) {
-      return <UpdatePrompt required />
-    }
+  clearError = () => {
+    this.setState({ requiredUpdate: false, error: null })
+  }
 
-    if (this.state.error) {
-      return this.props.fallback || <UpdatePrompt required />
+  render() {
+    if (this.state.requiredUpdate || this.state.error) {
+      return <UpdatePrompt required={Boolean(this.state.requiredUpdate)} onDismiss={this.clearError} />
     }
 
     return (
