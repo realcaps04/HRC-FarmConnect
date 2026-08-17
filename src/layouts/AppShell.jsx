@@ -44,7 +44,7 @@ export function AppShell() {
   const location = useLocation()
   const title = titleFromPath(location.pathname)
   const isHome = location.pathname === '/'
-  const isPurchases = location.pathname === '/purchases'
+  const isPurchases = location.pathname === '/purchases' || location.pathname === '/purchases/dates'
   const isImmersive = isHome || isPurchases
   const index = tabIndex(location.pathname)
   const previousIndex = useRef(index)

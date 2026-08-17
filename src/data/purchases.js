@@ -152,6 +152,44 @@ export function getDayUsageGuide(purchasedOn) {
   return dayUsageGuides.find((guide) => guide.purchasedOn === purchasedOn)
 }
 
+export function getPurchaseDays() {
+  const grouped = new Map()
+  for (const item of purchases) {
+    const current = grouped.get(item.purchasedOn) || {
+      purchasedOn: item.purchasedOn,
+      billNo: item.billNo,
+      location: item.location,
+      payment: item.payment,
+      items: [],
+      amount: 0,
+      gst: 0,
+      crops: new Set(),
+      categories: new Set(),
+    }
+    current.items.push(item)
+    current.amount += item.amount
+    current.gst += (item.amount * item.gstPercent) / (100 + item.gstPercent)
+    current.crops.add(item.cropName)
+    current.categories.add(item.category)
+    grouped.set(item.purchasedOn, current)
+  }
+
+  return [...grouped.values()]
+    .map((day) => ({
+      purchasedOn: day.purchasedOn,
+      billNo: day.billNo,
+      location: day.location,
+      payment: day.payment,
+      items: day.items,
+      itemCount: day.items.length,
+      amount: day.amount,
+      gst: day.gst,
+      crops: [...day.crops],
+      categories: [...day.categories],
+    }))
+    .sort((a, b) => (a.purchasedOn < b.purchasedOn ? 1 : -1))
+}
+
 export function getBills() {
   const grouped = new Map()
   for (const item of purchases) {

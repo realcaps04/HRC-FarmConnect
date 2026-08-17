@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Link, useSearchParams } from 'react-router-dom'
+import { Link, useLocation, useSearchParams } from 'react-router-dom'
 import { ChevronDown, ChevronLeft, ChevronRight, IndianRupee, Package, Receipt, ShoppingBag, Sprout } from 'lucide-react'
 import { ProductPackThumb } from '../components/purchases/ProductPackThumb'
 import { DayHowToUse } from '../components/purchases/DayHowToUse'
+import { PurchaseDateCard } from '../components/purchases/PurchaseDateCard'
 import { EmptyState } from '../components/ui/EmptyState'
 import { PurchaseCalendar } from '../components/purchases/PurchaseCalendar'
-import { getBills, getDayUsageGuide, purchases } from '../data'
+import { getBills, getDayUsageGuide, getPurchaseDays, purchases } from '../data'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
 import { cn } from '../utils/cn'
 import {
@@ -13,24 +14,35 @@ import {
   formatCurrency,
   formatDate,
   monthYear,
+  parseDate,
   toDateKey,
   weekdayShort,
 } from '../utils/format'
 
 export function PurchasesPage() {
+  const location = useLocation()
   const [searchParams] = useSearchParams()
+  const dateParam = searchParams.get('date')
+  const fromDates = searchParams.get('from') === 'dates' || location.pathname === '/purchases/dates'
+  const viewParam = searchParams.get('view')
+  const view =
+    viewParam === 'bills'
+      ? 'bills'
+      : location.pathname === '/purchases/dates' || viewParam === 'dates'
+        ? 'list'
+        : 'day'
   const [month, setMonth] = useState(() => {
-    const today = new Date()
-    return new Date(today.getFullYear(), today.getMonth(), 1)
+    const seed = dateParam ? parseDate(dateParam) : new Date()
+    return new Date(seed.getFullYear(), seed.getMonth(), 1)
   })
-  const [selectedKey, setSelectedKey] = useState(() => toDateKey(new Date()))
+  const [selectedKey, setSelectedKey] = useState(() => dateParam || toDateKey(new Date()))
   const [calendarOpen, setCalendarOpen] = useState(false)
-  const view = searchParams.get('view') === 'bills' ? 'bills' : 'purchases'
   const selectedRef = useRef(null)
   const purchaseKeys = useMemo(
     () => [...new Set(purchases.map((item) => item.purchasedOn))],
     [],
   )
+  const purchaseDays = useMemo(() => getPurchaseDays(), [])
 
   useDocumentTitle(view === 'bills' ? 'My Bills' : 'Purchases')
 
@@ -55,8 +67,16 @@ export function PurchasesPage() {
   }, [dayPurchases])
 
   useEffect(() => {
+    if (!dateParam) return
+    const seed = parseDate(dateParam)
+    setMonth(new Date(seed.getFullYear(), seed.getMonth(), 1))
+    setSelectedKey(dateParam)
+  }, [dateParam])
+
+  useEffect(() => {
+    if (view !== 'day') return
     selectedRef.current?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
-  }, [selectedKey, month])
+  }, [selectedKey, month, view])
 
   const selectDate = (day) => {
     const nextMonth = new Date(day.getFullYear(), day.getMonth(), 1)
@@ -128,9 +148,9 @@ export function PurchasesPage() {
             ))}
           </div>
         </section>
-      ) : (
+      ) : view === 'list' ? (
         <div className="page-enter">
-          <div className="mb-2 flex items-center gap-2">
+          <header className="mb-4 flex h-11 items-center gap-3">
             <Link
               to="/"
               className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white shadow-[0_4px_12px_rgb(28_25_23/0.08)]"
@@ -138,32 +158,56 @@ export function PurchasesPage() {
             >
               <ChevronLeft className="h-5 w-5 text-ink-950" />
             </Link>
-            <div className="flex min-w-0 flex-1 items-center justify-between">
-              <button
-                type="button"
-                onClick={() => shiftMonth(-1)}
-                className="flex h-8 w-8 items-center justify-center rounded-full text-ink-700"
-                aria-label="Previous month"
-              >
-                <ChevronLeft className="h-4 w-4" />
-              </button>
-              <button
-                type="button"
-                onClick={() => setCalendarOpen(true)}
-                className="inline-flex items-center gap-0.5 rounded-full bg-white px-2.5 py-1 text-[13px] font-semibold text-ink-950 shadow-[0_4px_12px_rgb(28_25_23/0.06)]"
-              >
-                {monthYear(month)}
-                <ChevronDown className="h-3.5 w-3.5 text-ink-500" />
-              </button>
-              <button
-                type="button"
-                onClick={() => shiftMonth(1)}
-                className="flex h-8 w-8 items-center justify-center rounded-full text-ink-700"
-                aria-label="Next month"
-              >
-                <ChevronRight className="h-4 w-4" />
-              </button>
-            </div>
+          </header>
+          <div className="space-y-4">
+            {purchaseDays.length ? (
+              purchaseDays.map((day) => <PurchaseDateCard key={day.purchasedOn} day={day} />)
+            ) : (
+              <EmptyState
+                icon={ShoppingBag}
+                title="No purchases yet"
+                description="Purchases collected from HRC will appear here."
+                className="border-0 shadow-[0_8px_24px_rgb(28_25_23/0.04)]"
+              />
+            )}
+          </div>
+        </div>
+      ) : (
+        <div className="page-enter">
+          <header className="mb-3">
+            <Link
+              to={fromDates || location.pathname === '/purchases/dates' ? '/purchases/dates' : '/'}
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-[0_4px_12px_rgb(28_25_23/0.08)]"
+              aria-label={fromDates ? 'Back to purchases' : 'Back to home'}
+            >
+              <ChevronLeft className="h-5 w-5 text-ink-950" />
+            </Link>
+          </header>
+          <div className="mb-3 flex items-center justify-between">
+            <button
+              type="button"
+              onClick={() => shiftMonth(-1)}
+              className="flex h-8 w-8 items-center justify-center rounded-full text-ink-700"
+              aria-label="Previous month"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => setCalendarOpen(true)}
+              className="inline-flex items-center gap-0.5 rounded-full bg-white px-2.5 py-1 text-[13px] font-semibold text-ink-950 shadow-[0_4px_12px_rgb(28_25_23/0.06)]"
+            >
+              {monthYear(month)}
+              <ChevronDown className="h-3.5 w-3.5 text-ink-500" />
+            </button>
+            <button
+              type="button"
+              onClick={() => shiftMonth(1)}
+              className="flex h-8 w-8 items-center justify-center rounded-full text-ink-700"
+              aria-label="Next month"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
           </div>
 
           <div className="flex gap-2 overflow-x-auto scrollbar-none">

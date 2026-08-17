@@ -31,6 +31,7 @@ export function AppRoutes() {
         <Route path="/farm/crops/:id" element={<CropDetailsPage />} />
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/products/:id" element={<ProductDetailsPage />} />
+        <Route path="/purchases/dates" element={<PurchasesPage />} />
         <Route path="/purchases" element={<PurchasesPage />} />
         <Route path="/purchases/:id" element={<PurchaseDetailsPage />} />
         <Route path="/applications" element={<ApplicationsPage />} />

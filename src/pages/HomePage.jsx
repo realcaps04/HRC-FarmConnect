@@ -58,7 +58,7 @@ export function HomePage() {
         <p className="mt-3 text-xs text-ink-500">{currentFarmer.customerSinceLabel}</p>
 
         <div className="mt-6 flex gap-10 px-2">
-          <Link to="/purchases" className="flex flex-col items-center gap-2">
+          <Link to="/purchases/dates" className="flex flex-col items-center gap-2">
             <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-[0_8px_20px_rgb(28_25_23/0.08)]">
               <ArrowUpRight className="h-5 w-5 text-ink-950" />
             </span>

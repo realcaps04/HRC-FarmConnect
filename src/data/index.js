@@ -18,7 +18,7 @@ export {
   getHydratedInventory,
   hydrateInventoryItem,
 } from './products'
-export { purchases, getPurchase, getBills, getDayUsageGuide } from './purchases'
+export { purchases, getPurchase, getBills, getDayUsageGuide, getPurchaseDays } from './purchases'
 export {
   applications,
   recommendations,
