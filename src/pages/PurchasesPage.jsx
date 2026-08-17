@@ -16,12 +16,13 @@ import {
   weekdayShort,
 } from '../utils/format'
 
-const START_MONTH = new Date(2026, 7, 1)
-
 export function PurchasesPage() {
   const [searchParams] = useSearchParams()
-  const [month, setMonth] = useState(START_MONTH)
-  const [selectedKey, setSelectedKey] = useState('2026-08-15')
+  const [month, setMonth] = useState(() => {
+    const today = new Date()
+    return new Date(today.getFullYear(), today.getMonth(), 1)
+  })
+  const [selectedKey, setSelectedKey] = useState(() => toDateKey(new Date()))
   const [calendarOpen, setCalendarOpen] = useState(false)
   const view = searchParams.get('view') === 'bills' ? 'bills' : 'purchases'
   const selectedRef = useRef(null)
