@@ -2,6 +2,7 @@ import { Outlet, useLocation } from 'react-router-dom'
 import { DesktopSidebar } from '../components/DesktopSidebar'
 import { Header } from '../components/Header'
 import { MobileBottomNav } from '../components/MobileBottomNav'
+import { cn } from '../utils/cn'
 
 const titles = {
   '/': 'Home',
@@ -34,13 +35,21 @@ function titleFromPath(pathname) {
 export function AppShell() {
   const location = useLocation()
   const title = titleFromPath(location.pathname)
+  const isHome = location.pathname === '/'
 
   return (
-    <div className="min-h-dvh bg-sand-50 text-ink-950">
+    <div className={cn('min-h-dvh text-ink-950', isHome ? 'bg-[#eef8f3]' : 'bg-sand-50')}>
       <DesktopSidebar />
       <div className="lg:pl-64">
-        <Header title={title} />
-        <main className="mx-auto w-full max-w-5xl px-4 pb-[calc(6rem+env(safe-area-inset-bottom))] pt-5 lg:px-8 lg:pb-12 lg:pt-8">
+        {isHome ? null : <Header title={title} />}
+        <main
+          className={cn(
+            'mx-auto w-full pb-[calc(6rem+env(safe-area-inset-bottom))]',
+            isHome
+              ? 'max-w-[430px] px-4 pt-3 lg:max-w-lg lg:pt-8'
+              : 'max-w-5xl px-4 pt-5 lg:px-8 lg:pb-12 lg:pt-8',
+          )}
+        >
           <div key={location.pathname} className="page-enter">
             <Outlet />
           </div>
