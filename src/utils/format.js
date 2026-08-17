@@ -9,7 +9,12 @@ const LONG_MONTHS = [
 ]
 
 export function parseDate(value) {
-  return value instanceof Date ? value : new Date(value)
+  if (value instanceof Date) return value
+  if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    const [year, month, day] = value.split('-').map(Number)
+    return new Date(year, month - 1, day)
+  }
+  return new Date(value)
 }
 
 export function formatDate(value) {
@@ -76,6 +81,17 @@ export function addDays(value, amount) {
   const date = parseDate(value)
   date.setDate(date.getDate() + amount)
   return date
+}
+
+export function addMonths(value, amount) {
+  const date = parseDate(value)
+  return new Date(date.getFullYear(), date.getMonth() + amount, 1)
+}
+
+export function daysInMonth(value) {
+  const date = parseDate(value)
+  const last = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
+  return Array.from({ length: last }, (_, index) => new Date(date.getFullYear(), date.getMonth(), index + 1))
 }
 
 export function formatAcres(acres) {
