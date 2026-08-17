@@ -1,4 +1,5 @@
 import { Navigate, useParams } from 'react-router-dom'
+import { ProductPackThumb } from '../components/purchases/ProductPackThumb'
 import { PageHeader } from '../components/ui/PageHeader'
 import { getPurchase } from '../data'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
@@ -18,6 +19,15 @@ export function PurchaseDetailsPage() {
         title={purchase.productName}
         subtitle={formatDateLong(purchase.purchasedOn)}
       />
+
+      {purchase.image ? (
+        <ProductPackThumb
+          src={purchase.image}
+          alt={purchase.productName}
+          className="mb-4 flex h-52 w-full items-center justify-center rounded-[22px] bg-white shadow-[0_8px_24px_rgb(28_25_23/0.04)]"
+          imgClassName="max-h-52 p-4"
+        />
+      ) : null}
 
       <section className="rounded-xl border border-sand-200 bg-white p-5 shadow-[0_1px_2px_rgb(28_25_23/0.04)]">
         <p className="text-2xl font-semibold tracking-tight text-ink-950">

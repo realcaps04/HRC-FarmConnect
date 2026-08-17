@@ -1,5 +1,3 @@
-import { images } from './farm'
-
 const INVOICE = {
   billNo: 'B2C/26-27/4530',
   purchasedOn: '2026-08-15',
@@ -22,7 +20,7 @@ export const purchases = [
     rate: 889.83,
     gstPercent: 18,
     amount: 10499.99,
-    image: images.foliage,
+    image: '/products/tagmil.png',
     ...INVOICE,
   },
   {
@@ -37,7 +35,7 @@ export const purchases = [
     rate: 576.27,
     gstPercent: 18,
     amount: 2719.99,
-    image: images.soil,
+    image: '/products/gilquin.jpg',
     ...INVOICE,
   },
   {
@@ -52,7 +50,7 @@ export const purchases = [
     rate: 550.85,
     gstPercent: 18,
     amount: 650,
-    image: images.roots,
+    image: '/products/hemansuper.jpg',
     ...INVOICE,
   },
   {
@@ -67,7 +65,7 @@ export const purchases = [
     rate: 114.29,
     gstPercent: 5,
     amount: 1200.05,
-    image: images.compost,
+    image: '',
     ...INVOICE,
   },
   {
@@ -82,7 +80,7 @@ export const purchases = [
     rate: 29.66,
     gstPercent: 18,
     amount: 1049.96,
-    image: images.cardamom,
+    image: '/products/tagmycin.webp',
     ...INVOICE,
   },
   {
@@ -97,7 +95,7 @@ export const purchases = [
     rate: 288.13,
     gstPercent: 18,
     amount: 1019.98,
-    image: images.pepper,
+    image: '/products/viraat.webp',
     ...INVOICE,
   },
   {
@@ -112,7 +110,7 @@ export const purchases = [
     rate: 66.67,
     gstPercent: 5,
     amount: 700.04,
-    image: images.vegetables,
+    image: '/products/taggibb.webp',
     ...INVOICE,
   },
 ]

@@ -97,6 +97,12 @@ export function daysInMonth(value) {
   return Array.from({ length: last }, (_, index) => new Date(date.getFullYear(), date.getMonth(), index + 1))
 }
 
+export function calendarCells(value) {
+  const days = daysInMonth(value)
+  const pad = days[0].getDay()
+  return [...Array.from({ length: pad }, () => null), ...days]
+}
+
 export function formatAcres(acres) {
   if (acres == null) return 'Homestead plot'
   const label = Number.isInteger(acres) ? String(acres) : acres.toFixed(1)
