@@ -9,7 +9,6 @@ import {
   ShoppingBag,
   Sprout,
   Store,
-  User,
 } from 'lucide-react'
 import { cn } from '../utils/cn'
 import { HrcLogo } from './HrcLogo'
@@ -55,7 +54,6 @@ export function DesktopSidebar() {
         ))}
       </nav>
       <div className="border-t border-sand-200 p-3">
-        <SidebarLink to="/profile" icon={User} label="Profile" />
         <SidebarLink to="/settings" icon={Settings} label="Settings" />
       </div>
     </aside>

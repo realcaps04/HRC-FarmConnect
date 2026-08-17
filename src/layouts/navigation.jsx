@@ -1,4 +1,4 @@
-import { Bell, BookOpen, Layers, Settings, ShoppingBag, Store, User } from 'lucide-react'
+import { Bell, BookOpen, Layers, Settings, ShoppingBag, Store } from 'lucide-react'
 
 export const moreLinks = [
   { to: '/purchases', label: 'Purchase History', icon: ShoppingBag },

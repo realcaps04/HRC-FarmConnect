@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
 import { ChevronRight } from 'lucide-react'
-import { FarmerProfileCard } from '../components/FarmerProfileCard'
 import { PageHeader } from '../components/ui/PageHeader'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
 import { moreLinks } from '../layouts/navigation'
@@ -10,10 +9,7 @@ export function MorePage() {
 
   return (
     <div>
-      <PageHeader title="More" subtitle="Purchases, soil reports, advice and your profile." />
-      <div className="mb-5">
-        <FarmerProfileCard compact />
-      </div>
+      <PageHeader title="More" subtitle="Purchases, soil reports, advice and settings." />
       <div className="overflow-hidden rounded-xl border border-sand-200 bg-white">
         {moreLinks.map((item, index) => (
           <Link

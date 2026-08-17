@@ -8,7 +8,6 @@ const morePrefixes = [
   '/advice',
   '/catalogue',
   '/notifications',
-  '/profile',
   '/settings',
   '/more',
   '/search',
