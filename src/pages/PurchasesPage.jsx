@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { ChevronLeft, ChevronRight, IndianRupee, Package, Receipt, ShoppingBag, Sprout } from 'lucide-react'
 import { EmptyState } from '../components/ui/EmptyState'
-import { getCatalogueProduct, purchases } from '../data'
+import { getBills, purchases } from '../data'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
 import { cn } from '../utils/cn'
 import {
@@ -17,21 +17,13 @@ import {
 const START_MONTH = new Date(2026, 7, 1)
 
 export function PurchasesPage() {
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [searchParams] = useSearchParams()
   const [month, setMonth] = useState(START_MONTH)
   const [selectedKey, setSelectedKey] = useState('2026-08-15')
   const view = searchParams.get('view') === 'bills' ? 'bills' : 'purchases'
   const selectedRef = useRef(null)
 
   useDocumentTitle(view === 'bills' ? 'My Bills' : 'Purchases')
-
-  const setView = (next) => {
-    if (next === 'bills') {
-      setSearchParams({ view: 'bills' })
-      return
-    }
-    setSearchParams({})
-  }
 
   const days = useMemo(() => daysInMonth(month), [month])
 
@@ -40,10 +32,7 @@ export function PurchasesPage() {
     [selectedKey],
   )
 
-  const bills = useMemo(
-    () => [...purchases].sort((a, b) => (a.purchasedOn < b.purchasedOn ? 1 : -1)),
-    [],
-  )
+  const bills = useMemo(() => getBills(), [])
 
   const stats = useMemo(() => {
     const total = dayPurchases.reduce((sum, item) => sum + item.amount, 0)
@@ -73,7 +62,7 @@ export function PurchasesPage() {
 
   return (
     <div className="overflow-x-hidden pb-4">
-      <header className="mb-5 flex items-center gap-3">
+      <header className="mb-5 flex h-11 items-center gap-3">
         <Link
           to="/"
           className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white shadow-[0_4px_12px_rgb(28_25_23/0.08)]"
@@ -81,26 +70,9 @@ export function PurchasesPage() {
         >
           <ChevronLeft className="h-5 w-5 text-ink-950" />
         </Link>
-        <button
-          type="button"
-          onClick={() => setView('purchases')}
-          className={cn(
-            'h-10 shrink-0 rounded-full px-4 text-[14px] font-semibold shadow-[0_4px_12px_rgb(28_25_23/0.08)] transition-colors duration-200',
-            view === 'purchases' ? 'bg-[#1b4036] text-white' : 'bg-white text-ink-700',
-          )}
-        >
-          Purchases
-        </button>
-        <button
-          type="button"
-          onClick={() => setView('bills')}
-          className={cn(
-            'h-10 shrink-0 rounded-full px-4 text-[14px] font-semibold shadow-[0_4px_12px_rgb(28_25_23/0.08)] transition-colors duration-200',
-            view === 'bills' ? 'bg-[#1b4036] text-white' : 'bg-white text-ink-700',
-          )}
-        >
-          My Bills
-        </button>
+        <h1 className="text-[18px] font-bold tracking-tight text-ink-950">
+          {view === 'bills' ? 'My Bills' : 'Purchases'}
+        </h1>
       </header>
 
       {view === 'bills' ? (
@@ -112,41 +84,31 @@ export function PurchasesPage() {
             </p>
           </div>
           <div className="space-y-3">
-            {bills.map((purchase) => {
-              const product = getCatalogueProduct(purchase.catalogueId)
-              return (
-                <Link
-                  key={purchase.id}
-                  to={`/purchases/${purchase.id}`}
-                  className="flex items-center gap-3 rounded-[22px] bg-white p-3 shadow-[0_8px_24px_rgb(28_25_23/0.04)]"
-                >
-                  <span className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-hrc-50 text-hrc-800">
-                    {product?.image ? (
-                      <span
-                        className="h-full w-full bg-cover bg-center"
-                        style={{ backgroundImage: `url(${product.image})` }}
-                      />
-                    ) : (
-                      <Receipt className="h-5 w-5" />
-                    )}
+            {bills.map((bill) => (
+              <Link
+                key={bill.billNo}
+                to="/purchases"
+                className="flex items-center gap-3 rounded-[22px] bg-white p-3 shadow-[0_8px_24px_rgb(28_25_23/0.04)]"
+              >
+                <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-hrc-50 text-hrc-800">
+                  <Receipt className="h-5 w-5" />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block text-[11px] font-medium uppercase tracking-wide text-ink-400">
+                    {bill.billNo}
                   </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="block text-[11px] font-medium uppercase tracking-wide text-ink-400">
-                      {purchase.billNo}
-                    </span>
-                    <span className="mt-0.5 block truncate text-[15px] font-semibold text-ink-950">
-                      {purchase.productName}
-                    </span>
-                    <span className="mt-0.5 block text-sm text-ink-500">
-                      {formatDate(purchase.purchasedOn)} · {purchase.quantityLabel}
-                    </span>
+                  <span className="mt-0.5 block truncate text-[15px] font-semibold text-ink-950">
+                    Horti Research Centre LLP
                   </span>
-                  <span className="shrink-0 text-sm font-semibold text-ink-700">
-                    {formatCurrency(purchase.amount)}
+                  <span className="mt-0.5 block text-sm text-ink-500">
+                    {formatDate(bill.purchasedOn)} · {bill.items.length} items · {bill.payment}
                   </span>
-                </Link>
-              )
-            })}
+                </span>
+                <span className="shrink-0 text-sm font-semibold text-ink-700">
+                  {formatCurrency(bill.amount)}
+                </span>
+              </Link>
+            ))}
           </div>
         </section>
       ) : (
@@ -220,9 +182,7 @@ export function PurchasesPage() {
 
             {dayPurchases.length ? (
               <div className="space-y-3">
-                {dayPurchases.map((purchase, index) => {
-                  const product = getCatalogueProduct(purchase.catalogueId)
-                  return (
+                {dayPurchases.map((purchase, index) => (
                     <Link
                       key={purchase.id}
                       to={`/purchases/${purchase.id}`}
@@ -230,7 +190,7 @@ export function PurchasesPage() {
                     >
                       <span
                         className="h-14 w-14 shrink-0 rounded-2xl bg-cover bg-center"
-                        style={{ backgroundImage: `url(${product?.image || ''})` }}
+                        style={{ backgroundImage: `url(${purchase.image || ''})` }}
                       />
                       <span className="min-w-0 flex-1">
                         <span className="block text-[11px] font-medium uppercase tracking-wide text-ink-400">
@@ -240,15 +200,14 @@ export function PurchasesPage() {
                           {purchase.productName}
                         </span>
                         <span className="mt-0.5 block text-sm text-ink-500">
-                          {purchase.quantityLabel} · {purchase.cropName}
+                          {purchase.quantityLabel} · {purchase.category}
                         </span>
                       </span>
                       <span className="shrink-0 text-sm font-semibold text-ink-700">
                         {formatCurrency(purchase.amount)}
                       </span>
                     </Link>
-                  )
-                })}
+                ))}
               </div>
             ) : (
               <EmptyState

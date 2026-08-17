@@ -28,11 +28,14 @@ export function formatDateLong(value) {
 }
 
 export function formatCurrency(amount) {
+  const rounded = Math.round((Number(amount) + Number.EPSILON) * 100) / 100
+  const hasPaise = Math.round(rounded * 100) % 100 !== 0
   return new Intl.NumberFormat('en-IN', {
     style: 'currency',
     currency: 'INR',
-    maximumFractionDigits: 0,
-  }).format(amount)
+    minimumFractionDigits: hasPaise ? 2 : 0,
+    maximumFractionDigits: 2,
+  }).format(rounded)
 }
 
 export function greeting(now = new Date()) {

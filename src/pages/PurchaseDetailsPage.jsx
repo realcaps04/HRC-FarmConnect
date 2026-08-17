@@ -1,4 +1,4 @@
-import { Link, Navigate, useParams } from 'react-router-dom'
+import { Navigate, useParams } from 'react-router-dom'
 import { PageHeader } from '../components/ui/PageHeader'
 import { getPurchase } from '../data'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
@@ -29,8 +29,16 @@ export function PurchaseDetailsPage() {
             <dd className="mt-1 font-semibold text-ink-950">{purchase.quantityLabel}</dd>
           </div>
           <div>
-            <dt className="text-ink-400">Crop</dt>
-            <dd className="mt-1 font-semibold text-ink-950">{purchase.cropName}</dd>
+            <dt className="text-ink-400">Rate</dt>
+            <dd className="mt-1 font-semibold text-ink-950">{formatCurrency(purchase.rate)}</dd>
+          </div>
+          <div>
+            <dt className="text-ink-400">GST</dt>
+            <dd className="mt-1 font-semibold text-ink-950">{purchase.gstPercent}%</dd>
+          </div>
+          <div>
+            <dt className="text-ink-400">Category</dt>
+            <dd className="mt-1 font-semibold text-ink-950">{purchase.category}</dd>
           </div>
           <div>
             <dt className="text-ink-400">Collected at</dt>
@@ -40,20 +48,17 @@ export function PurchaseDetailsPage() {
             <dt className="text-ink-400">Bill no.</dt>
             <dd className="mt-1 font-semibold text-ink-950">{purchase.billNo}</dd>
           </div>
+          <div>
+            <dt className="text-ink-400">Payment</dt>
+            <dd className="mt-1 font-semibold text-ink-950">{purchase.payment}</dd>
+          </div>
+          <div>
+            <dt className="text-ink-400">Prepared by</dt>
+            <dd className="mt-1 font-semibold text-ink-950">{purchase.preparedBy}</dd>
+          </div>
         </dl>
         <p className="mt-5 text-sm leading-6 text-ink-700">{purchase.notes}</p>
       </section>
-
-      <div className="mt-6 flex flex-wrap gap-4 text-sm font-medium">
-        {purchase.inventoryId ? (
-          <Link to={`/products/${purchase.inventoryId}`} className="text-hrc-800">
-            View in My Products
-          </Link>
-        ) : null}
-        <Link to={`/catalogue/${purchase.productName.toLowerCase()}`} className="text-hrc-800">
-          View catalogue page
-        </Link>
-      </div>
     </div>
   )
 }

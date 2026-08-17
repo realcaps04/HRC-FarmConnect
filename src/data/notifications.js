@@ -29,10 +29,10 @@ export const notifications = [
   {
     id: 'ntf-4',
     title: 'Purchase recorded',
-    body: 'Pasil (2 kg) has been added to your HRC purchase list.',
+    body: 'Invoice B2C/26-27/4530 for pesticides collected at Chettukuzhy has been added.',
     date: '2026-08-12T11:20:00+05:30',
     type: 'purchase',
-    href: '/purchases/pur-pasil-aug',
+    href: '/purchases/pur-tagmil-aug15',
     unread: false,
   },
 ]
