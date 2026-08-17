@@ -1,0 +1,38 @@
+export const notifications = [
+  {
+    id: 'ntf-1',
+    title: 'New HRC recommendation',
+    body: 'Your cardamom crop has a new advisory on root health.',
+    date: '2026-08-17T19:15:00+05:30',
+    type: 'advice',
+    href: '/advice/adv-root-health',
+    unread: true,
+  },
+  {
+    id: 'ntf-2',
+    title: 'Upcoming application',
+    body: 'Your next recommended application of Pasil is approaching.',
+    date: '2026-08-16T09:00:00+05:30',
+    type: 'application',
+    href: '/applications/app-pasil-upcoming',
+    unread: true,
+  },
+  {
+    id: 'ntf-3',
+    title: 'Soil report on file',
+    body: 'The July soil report for Plot 1 is ready to review.',
+    date: '2026-07-12T16:40:00+05:30',
+    type: 'soil',
+    href: '/soil-reports/soil-jul-2026',
+    unread: false,
+  },
+  {
+    id: 'ntf-4',
+    title: 'Purchase recorded',
+    body: 'Pasil (2 kg) has been added to your HRC purchase list.',
+    date: '2026-08-12T11:20:00+05:30',
+    type: 'purchase',
+    href: '/purchases/pur-pasil-aug',
+    unread: false,
+  },
+]

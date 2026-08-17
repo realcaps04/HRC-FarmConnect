@@ -1,0 +1,135 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+
+  --color-hrc-950: #10261d;
+  --color-hrc-900: #1a4a38;
+  --color-hrc-800: #215744;
+  --color-hrc-700: #2d6a54;
+  --color-hrc-600: #3d7d64;
+  --color-hrc-500: #4f9276;
+  --color-hrc-100: #e4efe8;
+  --color-hrc-50: #f0f6f3;
+
+  --color-sand-50: #f4f1eb;
+  --color-sand-100: #ebe6dc;
+  --color-sand-200: #e0d9cc;
+  --color-ink-950: #1c1917;
+  --color-ink-700: #44403c;
+  --color-ink-500: #6b6560;
+  --color-ink-400: #8a8378;
+  --color-ink-300: #a8a29e;
+
+  --color-gold-600: #9a7043;
+  --color-gold-500: #c4a574;
+  --color-gold-100: #f4ead8;
+
+  --color-warn-700: #9a5b12;
+  --color-warn-100: #f6e8d4;
+  --color-danger-700: #9f3a2a;
+  --color-danger-100: #f6e4df;
+
+  --shadow-card: 0 1px 2px rgb(28 25 23 / 0.04), 0 1px 1px rgb(28 25 23 / 0.03);
+  --shadow-raised: 0 8px 24px rgb(28 25 23 / 0.08);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: var(--color-sand-50);
+  color: var(--color-ink-950);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+#root {
+  min-height: 100dvh;
+}
+
+button,
+a,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+::selection {
+  background: var(--color-hrc-100);
+  color: var(--color-hrc-900);
+}
+
+.page-enter {
+  animation: page-enter 220ms ease-out;
+}
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes sheet-in {
+  from {
+    transform: translateY(16px);
+    opacity: 0.6;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+@keyframes overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #ebe6dc 0%, #f7f4ee 50%, #ebe6dc 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+.scrollbar-none {
+  scrollbar-width: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
