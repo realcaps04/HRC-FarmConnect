@@ -23,7 +23,7 @@ export function PurchasesPage() {
   const location = useLocation()
   const [searchParams] = useSearchParams()
   const dateParam = searchParams.get('date')
-  const fromDates = searchParams.get('from') === 'dates' || location.pathname === '/purchases/dates'
+  const from = searchParams.get('from')
   const viewParam = searchParams.get('view')
   const view =
     viewParam === 'bills'
@@ -31,6 +31,12 @@ export function PurchasesPage() {
       : location.pathname === '/purchases/dates' || viewParam === 'dates'
         ? 'list'
         : 'day'
+  const dayBackTo =
+    from === 'bills'
+      ? '/purchases?view=bills'
+      : from === 'dates' || location.pathname === '/purchases/dates'
+        ? '/purchases/dates'
+        : '/'
   const [month, setMonth] = useState(() => {
     const seed = dateParam ? parseDate(dateParam) : new Date()
     return new Date(seed.getFullYear(), seed.getMonth(), 1)
@@ -124,7 +130,7 @@ export function PurchasesPage() {
             {bills.map((bill) => (
               <Link
                 key={bill.billNo}
-                to="/purchases"
+                to={`/purchases?date=${bill.purchasedOn}&from=bills`}
                 className="flex items-center gap-3 rounded-[22px] bg-white p-3 shadow-[0_8px_24px_rgb(28_25_23/0.04)]"
               >
                 <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-hrc-50 text-hrc-800">
@@ -176,9 +182,9 @@ export function PurchasesPage() {
         <div className="page-enter">
           <header className="mb-3">
             <Link
-              to={fromDates || location.pathname === '/purchases/dates' ? '/purchases/dates' : '/'}
+              to={dayBackTo}
               className="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-[0_4px_12px_rgb(28_25_23/0.08)]"
-              aria-label={fromDates ? 'Back to purchases' : 'Back to home'}
+              aria-label="Back"
             >
               <ChevronLeft className="h-5 w-5 text-ink-950" />
             </Link>
