@@ -60,7 +60,7 @@ export function HomePage() {
       <section className="overflow-hidden rounded-[32px] bg-gradient-to-b from-[#d8f3e4] via-[#eefaf3] to-white p-5 shadow-[0_12px_30px_rgb(47_158_95/0.08)]">
         <div>
           <p className="text-[13px] text-ink-500">{greeting()}</p>
-          <p className="mt-1 text-[34px] font-bold leading-none tracking-tight text-ink-950">
+          <p className="mt-1 text-[28px] font-bold leading-none tracking-tight text-ink-950">
             {currentFarmer.fullName}
           </p>
           <p className="mt-2 text-sm font-medium text-hrc-800">{currentFarmer.address}</p>

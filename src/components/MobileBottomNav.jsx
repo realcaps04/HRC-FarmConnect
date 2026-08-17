@@ -1,16 +1,16 @@
 import { NavLink, useLocation } from 'react-router-dom'
-import { Droplets, Home, Menu, Package, Sprout } from 'lucide-react'
+import { Heart, Home, Search, User, Wallet } from 'lucide-react'
 import { cn } from '../utils/cn'
 
 const morePrefixes = [
-  '/purchases',
   '/soil-reports',
   '/advice',
   '/catalogue',
   '/notifications',
   '/settings',
   '/more',
-  '/search',
+  '/products',
+  '/applications',
 ]
 
 function isMorePath(pathname) {
@@ -21,40 +21,33 @@ function isMorePath(pathname) {
 
 const items = [
   { to: '/', label: 'Home', icon: Home, end: true },
-  { to: '/farm', label: 'My Farm', icon: Sprout },
-  { to: '/products', label: 'Products', icon: Package },
-  { to: '/applications', label: 'Applications', icon: Droplets },
-  { to: '/more', label: 'More', icon: Menu },
+  { to: '/farm', label: 'My Farm', icon: Heart },
+  { to: '/search', label: 'Search', icon: Search },
+  { to: '/purchases', label: 'Purchases', icon: Wallet },
+  { to: '/more', label: 'More', icon: User },
 ]
 
 export function MobileBottomNav() {
   const { pathname } = useLocation()
 
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-sand-200 bg-white/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-md lg:hidden">
-      <ul className="grid grid-cols-5">
+    <nav className="fixed inset-x-0 bottom-0 z-40 bg-[#1e4a3e] pb-[env(safe-area-inset-bottom)] lg:hidden">
+      <ul className="grid h-[4.25rem] grid-cols-5">
         {items.map((item) => (
-          <li key={item.to}>
+          <li key={item.to} className="flex items-center justify-center">
             <NavLink
               to={item.to}
               end={item.end}
+              aria-label={item.label}
               className={({ isActive }) => {
                 const active = item.to === '/more' ? isMorePath(pathname) : isActive
                 return cn(
-                  'flex h-[3.75rem] flex-col items-center justify-center gap-1 text-[11px] font-medium transition-colors',
-                  active ? 'text-hrc-800' : 'text-ink-400',
+                  'flex h-12 w-12 items-center justify-center rounded-full text-white transition-colors',
+                  active && 'bg-[#16352d] shadow-[0_8px_16px_rgb(0_0_0/0.28)]',
                 )
               }}
             >
-              {({ isActive }) => {
-                const active = item.to === '/more' ? isMorePath(pathname) : isActive
-                return (
-                  <>
-                    <item.icon className={cn('h-5 w-5', active && 'stroke-[2.25]')} />
-                    {item.label}
-                  </>
-                )
-              }}
+              <item.icon className="h-5 w-5" strokeWidth={1.75} />
             </NavLink>
           </li>
         ))}

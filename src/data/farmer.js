@@ -14,7 +14,7 @@ export const currentFarmer = {
   plotCount: 3,
   customerSince: 2026,
   customerSinceDate: '2026-08-15',
-  customerSinceLabel: 'Since 15th August',
+  customerSinceLabel: 'Since 15th August 2026',
   initials: 'EB',
 }
 

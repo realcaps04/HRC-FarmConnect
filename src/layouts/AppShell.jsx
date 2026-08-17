@@ -43,7 +43,7 @@ export function AppShell() {
         {isHome ? null : <Header title={title} />}
         <main
           className={cn(
-            'mx-auto w-full pb-[calc(6rem+env(safe-area-inset-bottom))]',
+            'mx-auto w-full pb-[calc(4.75rem+env(safe-area-inset-bottom))]',
             isHome
               ? 'h-full max-w-[430px] overflow-x-hidden overflow-y-auto px-4 pt-3 scrollbar-none lg:max-w-lg lg:pt-8'
               : 'max-w-5xl px-4 pt-5 lg:px-8 lg:pb-12 lg:pt-8',

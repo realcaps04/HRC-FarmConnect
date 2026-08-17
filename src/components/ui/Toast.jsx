@@ -4,7 +4,7 @@ export function ToastViewport({ toasts, onDismiss }) {
   if (!toasts.length) return null
 
   return (
-    <div className="pointer-events-none fixed inset-x-0 bottom-[calc(5.75rem+env(safe-area-inset-bottom))] z-[60] flex flex-col items-center gap-2 px-4 lg:bottom-6">
+    <div className="pointer-events-none fixed inset-x-0 bottom-[calc(5rem+env(safe-area-inset-bottom))] z-[60] flex flex-col items-center gap-2 px-4 lg:bottom-6">
       {toasts.map((toast) => (
         <div
           key={toast.id}
