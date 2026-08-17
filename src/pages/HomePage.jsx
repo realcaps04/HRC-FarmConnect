@@ -1,15 +1,10 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowUpRight, Bell } from 'lucide-react'
-import { HomePromoCard } from '../components/home/HomePromoCard'
+import { ArrowUpRight, Bell, Mail, MapPin, Phone } from 'lucide-react'
 import { HomeServiceTile } from '../components/home/HomeServiceTile'
-import {
-  adviceArticles,
-  crops,
-  currentFarmer,
-  notifications,
-} from '../data'
+import { currentFarmer, notifications } from '../data'
 import { cropOptions } from '../data/cropTimes'
+import { shop } from '../data/shop'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
 import { useToast } from '../hooks/useToast'
 import { greeting } from '../utils/format'
@@ -20,12 +15,6 @@ export function HomePage() {
   const [cropId, setCropId] = useState('crop-cardamom')
   const unread = notifications.some((item) => item.unread)
 
-  const farmCrops = crops
-  const promos = useMemo(
-    () => adviceArticles.filter((article) => article.cropName === 'Cardamom').slice(0, 3),
-    [],
-  )
-
   const selectItem = (item) => {
     setCropId(item.id)
     showToast(`${item.label} selected`)
@@ -33,10 +22,10 @@ export function HomePage() {
 
   return (
     <div className="overflow-x-hidden pb-2">
-      <header className="relative mb-4 flex h-16 items-center justify-between">
+      <header className="relative mb-4 flex h-12 items-center justify-between">
         <Link
           to="/"
-          className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white p-1.5 shadow-[0_4px_12px_rgb(28_25_23/0.08)]"
+          className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white p-1 shadow-[0_4px_12px_rgb(28_25_23/0.08)]"
           aria-label="Horti Research Centre LLP"
         >
           <img
@@ -96,35 +85,34 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="mt-5">
-        <div className="flex gap-3 overflow-x-auto pb-1 scrollbar-none">
-          {promos.map((article) => (
-            <HomePromoCard key={article.id} article={article} />
-          ))}
-        </div>
-      </section>
-
-      <section className="mt-6">
-        <h2 className="text-[18px] font-bold text-ink-950">Your crops</h2>
-        <div className="mt-4 flex gap-4 overflow-x-auto pb-2 scrollbar-none">
-          {farmCrops
-            .filter((item) => item.id === 'crop-cardamom')
-            .map((item) => (
-            <Link
-              key={item.id}
-              to={`/farm/crops/${item.id}`}
-              className="flex w-20 shrink-0 flex-col items-center gap-2"
-            >
-              <span
-                className="h-16 w-16 rounded-full bg-cover bg-center ring-4 ring-white shadow-[0_8px_18px_rgb(28_25_23/0.08)]"
-                style={{ backgroundImage: `url(${item.image})` }}
-              />
-              <span className="text-[12px] font-medium text-ink-700">{item.name}</span>
-            </Link>
-          ))}
-        </div>
-        <p className="mt-3 text-xs text-ink-400">
-          Hello {currentFarmer.firstName} — tap a crop above to set the home view.
+      <section className="mt-4 rounded-[32px] bg-white px-5 py-5 shadow-[0_8px_24px_rgb(28_25_23/0.04)]">
+        <p className="text-[12px] font-semibold uppercase tracking-wide text-ink-400">Shop</p>
+        <p className="mt-3 text-[16px] font-semibold tracking-tight text-ink-950">{shop.name}</p>
+        <p className="mt-2 flex gap-2 text-sm leading-6 text-ink-700">
+          <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-hrc-800" />
+          <span>
+            {shop.addressLines[0]}
+            <br />
+            {shop.addressLines[1]}
+          </span>
+        </p>
+        <a
+          href={`mailto:${shop.email}`}
+          className="mt-3 flex items-center gap-2 text-sm font-medium text-hrc-800"
+        >
+          <Mail className="h-4 w-4 shrink-0" />
+          {shop.email}
+        </a>
+        <p className="mt-3 flex items-center gap-2 text-sm font-medium text-ink-950">
+          <Phone className="h-4 w-4 shrink-0 text-hrc-800" />
+          <span>
+            {shop.phones.map((phone, index) => (
+              <span key={phone.href}>
+                {index > 0 ? <span className="text-ink-400"> | </span> : null}
+                <a href={phone.href}>{phone.display}</a>
+              </span>
+            ))}
+          </span>
         </p>
       </section>
     </div>

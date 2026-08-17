@@ -31,27 +31,30 @@ export function MobileBottomNav() {
   const { pathname } = useLocation()
 
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-40 bg-[#1e4a3e] pb-[env(safe-area-inset-bottom)] lg:hidden">
-      <ul className="grid h-[4.25rem] grid-cols-5">
-        {items.map((item) => (
-          <li key={item.to} className="flex items-center justify-center">
-            <NavLink
-              to={item.to}
-              end={item.end}
-              aria-label={item.label}
-              className={({ isActive }) => {
-                const active = item.to === '/more' ? isMorePath(pathname) : isActive
-                return cn(
-                  'flex h-12 w-12 items-center justify-center rounded-full text-white transition-colors',
-                  active && 'bg-[#16352d] shadow-[0_8px_16px_rgb(0_0_0/0.28)]',
-                )
-              }}
-            >
-              <item.icon className="h-5 w-5" strokeWidth={1.75} />
-            </NavLink>
-          </li>
-        ))}
-      </ul>
+    <nav className="pointer-events-none fixed inset-x-0 bottom-0 z-40 lg:hidden">
+      <div className="pointer-events-auto mx-auto w-full max-w-[430px] px-5 pb-[calc(1.15rem+env(safe-area-inset-bottom))]">
+        <ul className="flex h-[68px] items-center justify-around rounded-full bg-[#1b4036] px-1.5 shadow-[0_12px_28px_rgb(16_40_34/0.32)]">
+          {items.map((item) => (
+            <li key={item.to}>
+              <NavLink
+                to={item.to}
+                end={item.end}
+                aria-label={item.label}
+                className={({ isActive }) => {
+                  const active = item.to === '/more' ? isMorePath(pathname) : isActive
+                  return cn(
+                    'flex h-12 w-12 items-center justify-center rounded-full text-white',
+                    active &&
+                      'bg-[#132e27] shadow-[inset_0_3px_8px_rgb(0_0_0/0.45),inset_0_-1px_0_rgb(255_255_255/0.06)]',
+                  )
+                }}
+              >
+                <item.icon className="h-[22px] w-[22px]" strokeWidth={1.7} />
+              </NavLink>
+            </li>
+          ))}
+        </ul>
+      </div>
     </nav>
   )
 }

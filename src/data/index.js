@@ -28,6 +28,7 @@ export {
 export { soilReports, getSoilReport } from './soilReports'
 export { adviceArticles, adviceCategories, getAdvice } from './advice'
 export { notifications } from './notifications'
+export { shop } from './shop'
 
 export function searchAll(query) {
   const q = query.trim()
