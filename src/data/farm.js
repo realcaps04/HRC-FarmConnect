@@ -26,8 +26,8 @@ export const images = {
 export const farm = {
   id: 'farm-1',
   name: "Joseph's Cardamom Farm",
-  location: 'Pampadumpara',
-  landmark: 'Near Chettukuzhy, Idukki',
+  location: 'Thopramkudy',
+  landmark: 'Mullappallil, Idukki',
   totalAcres: 3.5,
   plotCount: 3,
   elevation: '1,100 m',
