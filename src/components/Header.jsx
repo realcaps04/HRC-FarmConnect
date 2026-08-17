@@ -14,7 +14,7 @@ export function Header({ title }) {
             <HrcLogo compact />
           </div>
           <p className="truncate text-[15px] font-semibold text-ink-950 lg:text-base">
-            {title || 'HRC Farmer Companion'}
+            {title || 'HRC FarmConnect'}
           </p>
         </div>
         <div className="flex items-center gap-1">

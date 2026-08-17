@@ -6,6 +6,5 @@ export const moreLinks = [
   { to: '/advice', label: 'HRC Advice', icon: BookOpen },
   { to: '/catalogue', label: 'Product Catalogue', icon: Store },
   { to: '/notifications', label: 'Notifications', icon: Bell },
-  { to: '/profile', label: 'Profile', icon: User },
   { to: '/settings', label: 'Settings', icon: Settings },
 ]

@@ -1,4 +1,4 @@
-# HRC Farmer Companion
+# HRC FarmConnect
 
 Mobile-first frontend prototype for Horti Research Centre LLP farmers in Chettukuzhy, Idukki.
 

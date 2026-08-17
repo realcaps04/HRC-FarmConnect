@@ -75,7 +75,7 @@ export function SettingsPage() {
         />
       </div>
       <p className="mt-8 text-xs leading-5 text-ink-400">
-        Horti Research Centre LLP, Chettukuzhy, Idukki, Kerala. Farmer Companion prototype —
+        Horti Research Centre LLP, Chettukuzhy, Idukki, Kerala. HRC FarmConnect prototype —
         mock data only.
       </p>
     </div>

@@ -42,14 +42,7 @@ export function HomePage() {
   return (
     <div className="bg-sand-50">
       <section className="bg-[radial-gradient(120%_90%_at_50%_-10%,#3a6b5c_0%,#2d5a4d_46%,#1e4a3e_100%)] px-5 pb-8 pt-3 text-white">
-        <header className="relative mb-6 flex h-11 items-center justify-center">
-          <Link
-            to="/profile"
-            className="absolute left-0 flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-white"
-            aria-label="Back to profile"
-          >
-            <ChevronLeft className="h-5 w-5" />
-          </Link>
+        <header className="mb-6 flex h-11 items-center justify-center">
           <h1 className="text-[17px] font-semibold tracking-tight">Farm Schedule</h1>
         </header>
 

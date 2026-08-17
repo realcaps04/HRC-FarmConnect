@@ -12,7 +12,7 @@ export function HrcLogo({ compact = false }) {
       {compact ? null : (
         <span className="leading-tight">
           <span className="block text-sm font-semibold tracking-tight text-ink-950">HRC</span>
-          <span className="block text-[11px] text-ink-500">Farmer Companion</span>
+          <span className="block text-[11px] text-ink-500">FarmConnect</span>
         </span>
       )}
     </Link>

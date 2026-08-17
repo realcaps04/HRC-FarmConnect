@@ -1,6 +1,6 @@
 {
-  "name": "HRC Farmer Companion",
-  "short_name": "HRC",
+  "name": "HRC FarmConnect",
+  "short_name": "HRC FarmConnect",
   "description": "Personal digital farm companion for Horti Research Centre farmers in Idukki, Kerala.",
   "start_url": "/",
   "scope": "/",

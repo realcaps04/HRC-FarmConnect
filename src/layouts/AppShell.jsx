@@ -29,7 +29,7 @@ function titleFromPath(pathname) {
   if (pathname.startsWith('/soil-reports')) return 'Soil Report'
   if (pathname.startsWith('/advice')) return 'Advice'
   if (pathname.startsWith('/catalogue')) return 'Catalogue'
-  return 'HRC Farmer Companion'
+  return 'HRC FarmConnect'
 }
 
 export function AppShell() {
