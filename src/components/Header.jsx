@@ -1,9 +1,12 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Bell, Search } from 'lucide-react'
 import { notifications } from '../data'
+import { DevelopmentNotice } from './DevelopmentNotice'
 import { HrcLogo } from './HrcLogo'
 
 export function Header({ title }) {
+  const [noticeOpen, setNoticeOpen] = useState(false)
   const unread = notifications.filter((item) => item.unread).length
 
   return (
@@ -25,8 +28,9 @@ export function Header({ title }) {
           >
             <Search className="h-5 w-5" />
           </Link>
-          <Link
-            to="/notifications"
+          <button
+            type="button"
+            onClick={() => setNoticeOpen(true)}
             className="relative flex h-11 w-11 items-center justify-center rounded-lg text-ink-700 transition-colors hover:bg-sand-100"
             aria-label="Notifications"
           >
@@ -34,9 +38,10 @@ export function Header({ title }) {
             {unread ? (
               <span className="absolute right-2.5 top-2.5 h-2 w-2 rounded-full bg-hrc-700" />
             ) : null}
-          </Link>
+          </button>
         </div>
       </div>
+      <DevelopmentNotice open={noticeOpen} onClose={() => setNoticeOpen(false)} />
     </header>
   )
 }

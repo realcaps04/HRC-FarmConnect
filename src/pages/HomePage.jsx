@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowUpRight, Bell, Mail, MapPin, Phone, Receipt } from 'lucide-react'
+import { DevelopmentNotice } from '../components/DevelopmentNotice'
 import { HomeServiceTile } from '../components/home/HomeServiceTile'
 import { currentFarmer, notifications } from '../data'
 import { cropOptions } from '../data/cropTimes'
@@ -13,6 +14,7 @@ export function HomePage() {
   useDocumentTitle('Home')
   const { showToast } = useToast()
   const [cropId, setCropId] = useState('crop-cardamom')
+  const [noticeOpen, setNoticeOpen] = useState(false)
   const unread = notifications.some((item) => item.unread)
 
   const selectItem = (item) => {
@@ -34,8 +36,9 @@ export function HomePage() {
             className="h-full w-full object-contain"
           />
         </Link>
-        <Link
-          to="/notifications"
+        <button
+          type="button"
+          onClick={() => setNoticeOpen(true)}
           className="relative flex h-10 w-10 items-center justify-center rounded-full text-ink-950"
           aria-label="Notifications"
         >
@@ -43,8 +46,10 @@ export function HomePage() {
           {unread ? (
             <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-hrc-700" />
           ) : null}
-        </Link>
+        </button>
       </header>
+
+      <DevelopmentNotice open={noticeOpen} onClose={() => setNoticeOpen(false)} />
 
       <section className="overflow-hidden rounded-[32px] bg-gradient-to-b from-[#d8f3e4] via-[#eefaf3] to-white p-5 shadow-[0_12px_30px_rgb(47_158_95/0.08)]">
         <div>
