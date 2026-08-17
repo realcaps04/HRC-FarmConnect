@@ -80,11 +80,17 @@ export function HomePage() {
 
   return (
     <div className="overflow-x-hidden pb-2">
-      <header className="relative mb-4 flex h-12 items-center justify-center">
-        <img src="/hrc-logo.png" alt="HRC FarmConnect" className="h-11 w-11 object-contain" />
+      <header className="relative mb-4 flex h-12 items-center justify-between">
+        <Link
+          to="/"
+          className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white shadow-[0_4px_12px_rgb(28_25_23/0.08)]"
+          aria-label="HRC FarmConnect home"
+        >
+          <img src="/hrc-logo.png" alt="" className="h-full w-full object-cover" />
+        </Link>
         <Link
           to="/notifications"
-          className="absolute right-0 flex h-10 w-10 items-center justify-center rounded-full text-ink-950"
+          className="relative flex h-10 w-10 items-center justify-center rounded-full text-ink-950"
           aria-label="Notifications"
         >
           <Bell className="h-5 w-5" />
