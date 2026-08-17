@@ -79,7 +79,7 @@ export function HomePage() {
   )
 
   return (
-    <div className="pb-2">
+    <div className="overflow-x-hidden pb-2">
       <header className="relative mb-4 flex h-12 items-center justify-center">
         <img src="/hrc-logo.png" alt="HRC FarmConnect" className="h-11 w-11 object-contain" />
         <Link

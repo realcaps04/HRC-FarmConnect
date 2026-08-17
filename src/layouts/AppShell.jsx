@@ -37,15 +37,15 @@ export function AppShell() {
   const isHome = location.pathname === '/'
 
   return (
-    <div className={cn('min-h-dvh text-ink-950', isHome ? 'bg-[#eef8f3]' : 'bg-sand-50')}>
+    <div className={cn('min-h-dvh text-ink-950', isHome ? 'h-dvh overflow-hidden bg-[#eef8f3]' : 'bg-sand-50')}>
       <DesktopSidebar />
-      <div className="lg:pl-64">
+      <div className={cn('lg:pl-64', isHome && 'h-full')}>
         {isHome ? null : <Header title={title} />}
         <main
           className={cn(
             'mx-auto w-full pb-[calc(6rem+env(safe-area-inset-bottom))]',
             isHome
-              ? 'max-w-[430px] px-4 pt-3 lg:max-w-lg lg:pt-8'
+              ? 'h-full max-w-[430px] overflow-x-hidden overflow-y-auto px-4 pt-3 scrollbar-none lg:max-w-lg lg:pt-8'
               : 'max-w-5xl px-4 pt-5 lg:px-8 lg:pb-12 lg:pt-8',
           )}
         >
