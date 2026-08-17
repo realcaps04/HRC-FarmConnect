@@ -84,9 +84,9 @@ export function PurchasesPage() {
         >
           <ChevronLeft className="h-5 w-5 text-ink-950" />
         </Link>
-        <h1 className="text-[18px] font-bold tracking-tight text-ink-950">
-          {view === 'bills' ? 'My Bills' : 'Purchases'}
-        </h1>
+        {view === 'bills' ? (
+          <h1 className="text-[18px] font-bold tracking-tight text-ink-950">My Bills</h1>
+        ) : null}
       </header>
 
       {view === 'bills' ? (
