@@ -20,7 +20,7 @@ export const purchases = [
     rate: 889.83,
     gstPercent: 18,
     amount: 10499.99,
-    image: '/products/tagmil.png',
+    image: '/products/tagmil.png?v=2',
     ...INVOICE,
   },
   {
