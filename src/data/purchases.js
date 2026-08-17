@@ -115,8 +115,41 @@ export const purchases = [
   },
 ]
 
+export const dayUsageGuides = [
+  {
+    purchasedOn: '2026-08-15',
+    methods: [
+      {
+        id: 'spraying',
+        label: 'Spraying',
+        mixIn: '200 litres',
+        items: [
+          { catalogueId: 'cat-gilquin', productName: 'Gilquin', dose: '400 ml' },
+          { catalogueId: 'cat-hemansuper', productName: 'Hemansuper', dose: '100 ml' },
+          { catalogueId: 'cat-fm', productName: 'Fm 250 Gm New', dose: '1 packet' },
+          { catalogueId: 'cat-tagmycin', productName: 'Tagmycin 6 Gm', dose: '3 packets' },
+          { catalogueId: 'cat-viraat', productName: 'Viraat Plus 1 L', dose: '300 ml' },
+          { catalogueId: 'cat-taggibb', productName: 'Taggibb 1 Gm', dose: '1 Nos' },
+        ],
+      },
+      {
+        id: 'pouring',
+        label: 'Pouring',
+        mixIn: '200 litres',
+        items: [
+          { catalogueId: 'cat-tagmil', productName: 'Tagmil', dose: '400 g' },
+        ],
+      },
+    ],
+  },
+]
+
 export function getPurchase(id) {
   return purchases.find((item) => item.id === id)
+}
+
+export function getDayUsageGuide(purchasedOn) {
+  return dayUsageGuides.find((guide) => guide.purchasedOn === purchasedOn)
 }
 
 export function getBills() {

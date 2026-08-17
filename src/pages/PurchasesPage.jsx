@@ -2,9 +2,10 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { ChevronDown, ChevronLeft, ChevronRight, IndianRupee, Package, Receipt, ShoppingBag, Sprout } from 'lucide-react'
 import { ProductPackThumb } from '../components/purchases/ProductPackThumb'
+import { DayHowToUse } from '../components/purchases/DayHowToUse'
 import { EmptyState } from '../components/ui/EmptyState'
 import { PurchaseCalendar } from '../components/purchases/PurchaseCalendar'
-import { getBills, purchases } from '../data'
+import { getBills, getDayUsageGuide, purchases } from '../data'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
 import { cn } from '../utils/cn'
 import {
@@ -41,6 +42,7 @@ export function PurchasesPage() {
   )
 
   const bills = useMemo(() => getBills(), [])
+  const usageGuide = useMemo(() => getDayUsageGuide(selectedKey), [selectedKey])
 
   const stats = useMemo(() => {
     const total = dayPurchases.reduce((sum, item) => sum + item.amount, 0)
@@ -77,18 +79,18 @@ export function PurchasesPage() {
 
   return (
     <div className="overflow-x-hidden pb-4">
-      <header className="mb-5 flex h-11 items-center gap-3">
-        <Link
-          to="/"
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white shadow-[0_4px_12px_rgb(28_25_23/0.08)]"
-          aria-label="Back to home"
-        >
-          <ChevronLeft className="h-5 w-5 text-ink-950" />
-        </Link>
-        {view === 'bills' ? (
+      {view === 'bills' ? (
+        <header className="mb-4 flex h-11 items-center gap-3">
+          <Link
+            to="/"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white shadow-[0_4px_12px_rgb(28_25_23/0.08)]"
+            aria-label="Back to home"
+          >
+            <ChevronLeft className="h-5 w-5 text-ink-950" />
+          </Link>
           <h1 className="text-[18px] font-bold tracking-tight text-ink-950">My Bills</h1>
-        ) : null}
-      </header>
+        </header>
+      ) : null}
 
       {view === 'bills' ? (
         <section className="page-enter">
@@ -128,34 +130,43 @@ export function PurchasesPage() {
         </section>
       ) : (
         <div className="page-enter">
-          <div className="mb-4 flex items-center justify-between px-1">
-            <button
-              type="button"
-              onClick={() => shiftMonth(-1)}
-              className="flex h-9 w-9 items-center justify-center rounded-full text-ink-700"
-              aria-label="Previous month"
+          <div className="mb-2 flex items-center gap-2">
+            <Link
+              to="/"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white shadow-[0_4px_12px_rgb(28_25_23/0.08)]"
+              aria-label="Back to home"
             >
-              <ChevronLeft className="h-4 w-4" />
-            </button>
-            <button
-              type="button"
-              onClick={() => setCalendarOpen(true)}
-              className="inline-flex items-center gap-1 rounded-full bg-white px-3 py-1.5 text-sm font-semibold text-ink-950 shadow-[0_4px_12px_rgb(28_25_23/0.06)]"
-            >
-              {monthYear(month)}
-              <ChevronDown className="h-4 w-4 text-ink-500" />
-            </button>
-            <button
-              type="button"
-              onClick={() => shiftMonth(1)}
-              className="flex h-9 w-9 items-center justify-center rounded-full text-ink-700"
-              aria-label="Next month"
-            >
-              <ChevronRight className="h-4 w-4" />
-            </button>
+              <ChevronLeft className="h-5 w-5 text-ink-950" />
+            </Link>
+            <div className="flex min-w-0 flex-1 items-center justify-between">
+              <button
+                type="button"
+                onClick={() => shiftMonth(-1)}
+                className="flex h-8 w-8 items-center justify-center rounded-full text-ink-700"
+                aria-label="Previous month"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => setCalendarOpen(true)}
+                className="inline-flex items-center gap-0.5 rounded-full bg-white px-2.5 py-1 text-[13px] font-semibold text-ink-950 shadow-[0_4px_12px_rgb(28_25_23/0.06)]"
+              >
+                {monthYear(month)}
+                <ChevronDown className="h-3.5 w-3.5 text-ink-500" />
+              </button>
+              <button
+                type="button"
+                onClick={() => shiftMonth(1)}
+                className="flex h-8 w-8 items-center justify-center rounded-full text-ink-700"
+                aria-label="Next month"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </button>
+            </div>
           </div>
 
-          <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none">
+          <div className="flex gap-2 overflow-x-auto scrollbar-none">
             {days.map((day) => {
               const key = toDateKey(day)
               const selected = key === selectedKey
@@ -192,6 +203,7 @@ export function PurchasesPage() {
                 <SummaryStat icon={Sprout} label="Crops" value={String(stats.crops)} />
               </div>
             </div>
+            {usageGuide ? <DayHowToUse guide={usageGuide} /> : null}
           </section>
 
           <section className="mt-6">
