@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowUpRight, Bell, Mail, MapPin, Phone, Receipt } from 'lucide-react'
+import { ArrowUpRight, Bell, Mail, MapPin, Navigation, Phone, Receipt } from 'lucide-react'
 import { DevelopmentNotice } from '../components/DevelopmentNotice'
 import { HomeServiceTile } from '../components/home/HomeServiceTile'
 import { currentFarmer, notifications } from '../data'
@@ -124,6 +124,26 @@ export function HomePage() {
             ))}
           </span>
         </p>
+
+        <div className="mt-4 overflow-hidden rounded-[22px] bg-sand-100">
+          <iframe
+            title="Horti Research Centre LLP location"
+            src={`https://maps.google.com/maps?q=${encodeURIComponent(shop.mapsQuery)}&z=16&output=embed`}
+            className="h-44 w-full border-0"
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            allowFullScreen
+          />
+        </div>
+        <a
+          href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(shop.mapsQuery)}`}
+          target="_blank"
+          rel="noreferrer"
+          className="mt-3 flex items-center justify-center gap-2 rounded-full bg-[#1b4036] py-3 text-sm font-semibold text-white"
+        >
+          <Navigation className="h-4 w-4" />
+          Open in Google Maps
+        </a>
       </section>
     </div>
   )
