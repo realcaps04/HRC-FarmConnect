@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { ChevronLeft, ChevronRight, IndianRupee, Package, ReceiptText, ShoppingBag, Sprout } from 'lucide-react'
+import { Link, useSearchParams } from 'react-router-dom'
+import { ChevronLeft, ChevronRight, IndianRupee, Package, Receipt, ShoppingBag, Sprout } from 'lucide-react'
 import { EmptyState } from '../components/ui/EmptyState'
 import { getCatalogueProduct, purchases } from '../data'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
@@ -17,11 +17,21 @@ import {
 const START_MONTH = new Date(2026, 7, 1)
 
 export function PurchasesPage() {
-  useDocumentTitle(view === 'bills' ? 'My Bills' : 'Purchases')
+  const [searchParams, setSearchParams] = useSearchParams()
   const [month, setMonth] = useState(START_MONTH)
   const [selectedKey, setSelectedKey] = useState('2026-08-15')
-  const [view, setView] = useState('purchases')
+  const view = searchParams.get('view') === 'bills' ? 'bills' : 'purchases'
   const selectedRef = useRef(null)
+
+  useDocumentTitle(view === 'bills' ? 'My Bills' : 'Purchases')
+
+  const setView = (next) => {
+    if (next === 'bills') {
+      setSearchParams({ view: 'bills' })
+      return
+    }
+    setSearchParams({})
+  }
 
   const days = useMemo(() => daysInMonth(month), [month])
 
@@ -63,151 +73,37 @@ export function PurchasesPage() {
 
   return (
     <div className="overflow-x-hidden pb-4">
-      <header className="mb-5 flex h-11 items-center gap-3">
+      <header className="mb-5 flex items-center gap-3">
         <Link
           to="/"
-          className="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-[0_4px_12px_rgb(28_25_23/0.08)]"
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white shadow-[0_4px_12px_rgb(28_25_23/0.08)]"
           aria-label="Back to home"
         >
           <ChevronLeft className="h-5 w-5 text-ink-950" />
         </Link>
-        <div className="flex items-center gap-4">
-          <button
-            type="button"
-            onClick={() => setView('purchases')}
-            className={cn(
-              'text-[18px] font-bold tracking-tight transition-colors duration-200',
-              view === 'purchases' ? 'text-ink-950' : 'text-ink-400',
-            )}
-          >
-            Purchases
-          </button>
-          <button
-            type="button"
-            onClick={() => setView('bills')}
-            className={cn(
-              'text-[18px] font-bold tracking-tight transition-colors duration-200',
-              view === 'bills' ? 'text-ink-950' : 'text-ink-400',
-            )}
-          >
-            My Bills
-          </button>
-        </div>
+        <button
+          type="button"
+          onClick={() => setView('purchases')}
+          className={cn(
+            'h-10 shrink-0 rounded-full px-4 text-[14px] font-semibold shadow-[0_4px_12px_rgb(28_25_23/0.08)] transition-colors duration-200',
+            view === 'purchases' ? 'bg-[#1b4036] text-white' : 'bg-white text-ink-700',
+          )}
+        >
+          Purchases
+        </button>
+        <button
+          type="button"
+          onClick={() => setView('bills')}
+          className={cn(
+            'h-10 shrink-0 rounded-full px-4 text-[14px] font-semibold shadow-[0_4px_12px_rgb(28_25_23/0.08)] transition-colors duration-200',
+            view === 'bills' ? 'bg-[#1b4036] text-white' : 'bg-white text-ink-700',
+          )}
+        >
+          My Bills
+        </button>
       </header>
 
-      {view === 'purchases' ? (
-        <div className="page-enter">
-
-      <div className="mb-4 flex items-center justify-between px-1">
-        <button
-          type="button"
-          onClick={() => shiftMonth(-1)}
-          className="flex h-9 w-9 items-center justify-center rounded-full text-ink-700"
-          aria-label="Previous month"
-        >
-          <ChevronLeft className="h-4 w-4" />
-        </button>
-        <p className="text-sm font-semibold text-ink-950">{monthYear(month)}</p>
-        <button
-          type="button"
-          onClick={() => shiftMonth(1)}
-          className="flex h-9 w-9 items-center justify-center rounded-full text-ink-700"
-          aria-label="Next month"
-        >
-          <ChevronRight className="h-4 w-4" />
-        </button>
-      </div>
-
-      <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none">
-        {days.map((day) => {
-          const key = toDateKey(day)
-          const selected = key === selectedKey
-          const hasPurchases = purchases.some((item) => item.purchasedOn === key)
-          return (
-            <button
-              key={key}
-              ref={selected ? selectedRef : null}
-              type="button"
-              onClick={() => setSelectedKey(key)}
-              className={cn(
-                'flex h-[72px] w-[58px] shrink-0 flex-col items-center justify-center rounded-full text-[11px] font-medium',
-                selected ? 'bg-[#1b4036] text-white' : 'bg-[#ececec] text-ink-950',
-              )}
-            >
-              <span className={selected ? 'text-white/80' : 'text-ink-500'}>{weekdayShort(day)}</span>
-              <span className="mt-1 text-[15px] font-semibold">{day.getDate()}</span>
-              {hasPurchases && !selected ? (
-                <span className="mt-1 h-1 w-1 rounded-full bg-hrc-800" />
-              ) : (
-                <span className="mt-1 h-1 w-1" />
-              )}
-            </button>
-          )
-        })}
-      </div>
-
-      <section className="mt-6">
-        <h2 className="text-[18px] font-bold text-ink-950">Day summary</h2>
-        <div className="mt-3 rounded-[24px] bg-white px-4 py-4 shadow-[0_8px_24px_rgb(28_25_23/0.04)]">
-          <div className="grid grid-cols-3 gap-2">
-            <SummaryStat icon={Package} label="Items" value={String(stats.items)} />
-            <SummaryStat icon={IndianRupee} label="Spend" value={formatCurrency(stats.total)} />
-            <SummaryStat icon={Sprout} label="Crops" value={String(stats.crops)} />
-          </div>
-        </div>
-      </section>
-
-      <section className="mt-6">
-        <div className="mb-3 flex items-end justify-between gap-3">
-          <h2 className="text-[18px] font-bold text-ink-950">Products</h2>
-          <p className="text-sm font-medium text-ink-500">
-            {stats.items ? `${stats.items} ${stats.items === 1 ? 'item' : 'items'}` : 'No items'}
-          </p>
-        </div>
-
-        {dayPurchases.length ? (
-          <div className="space-y-3">
-            {dayPurchases.map((purchase, index) => {
-              const product = getCatalogueProduct(purchase.catalogueId)
-              return (
-                <Link
-                  key={purchase.id}
-                  to={`/purchases/${purchase.id}`}
-                  className="flex items-center gap-3 rounded-[22px] bg-white p-3 shadow-[0_8px_24px_rgb(28_25_23/0.04)]"
-                >
-                  <span
-                    className="h-14 w-14 shrink-0 rounded-2xl bg-cover bg-center"
-                    style={{ backgroundImage: `url(${product?.image || ''})` }}
-                  />
-                  <span className="min-w-0 flex-1">
-                    <span className="block text-[11px] font-medium uppercase tracking-wide text-ink-400">
-                      Item {index + 1}
-                    </span>
-                    <span className="mt-0.5 block truncate text-[15px] font-semibold text-ink-950">
-                      {purchase.productName}
-                    </span>
-                    <span className="mt-0.5 block text-sm text-ink-500">
-                      {purchase.quantityLabel} · {purchase.cropName}
-                    </span>
-                  </span>
-                  <span className="shrink-0 text-sm font-semibold text-ink-700">
-                    {formatCurrency(purchase.amount)}
-                  </span>
-                </Link>
-              )
-            })}
-          </div>
-        ) : (
-          <EmptyState
-            icon={ShoppingBag}
-            title="No purchases this day"
-            description="Pick another date to see what was collected from HRC."
-            className="border-0 shadow-[0_8px_24px_rgb(28_25_23/0.04)]"
-          />
-        )}
-      </section>
-        </div>
-      ) : (
+      {view === 'bills' ? (
         <section className="page-enter">
           <div className="mb-3 flex items-end justify-between gap-3">
             <h2 className="text-[18px] font-bold text-ink-950">My Bills</h2>
@@ -231,7 +127,7 @@ export function PurchasesPage() {
                         style={{ backgroundImage: `url(${product.image})` }}
                       />
                     ) : (
-                      <ReceiptText className="h-5 w-5" />
+                      <Receipt className="h-5 w-5" />
                     )}
                   </span>
                   <span className="min-w-0 flex-1">
@@ -253,6 +149,117 @@ export function PurchasesPage() {
             })}
           </div>
         </section>
+      ) : (
+        <div className="page-enter">
+          <div className="mb-4 flex items-center justify-between px-1">
+            <button
+              type="button"
+              onClick={() => shiftMonth(-1)}
+              className="flex h-9 w-9 items-center justify-center rounded-full text-ink-700"
+              aria-label="Previous month"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+            <p className="text-sm font-semibold text-ink-950">{monthYear(month)}</p>
+            <button
+              type="button"
+              onClick={() => shiftMonth(1)}
+              className="flex h-9 w-9 items-center justify-center rounded-full text-ink-700"
+              aria-label="Next month"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
+          </div>
+
+          <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none">
+            {days.map((day) => {
+              const key = toDateKey(day)
+              const selected = key === selectedKey
+              const hasPurchases = purchases.some((item) => item.purchasedOn === key)
+              return (
+                <button
+                  key={key}
+                  ref={selected ? selectedRef : null}
+                  type="button"
+                  onClick={() => setSelectedKey(key)}
+                  className={cn(
+                    'flex h-[72px] w-[58px] shrink-0 flex-col items-center justify-center rounded-full text-[11px] font-medium',
+                    selected ? 'bg-[#1b4036] text-white' : 'bg-[#ececec] text-ink-950',
+                  )}
+                >
+                  <span className={selected ? 'text-white/80' : 'text-ink-500'}>{weekdayShort(day)}</span>
+                  <span className="mt-1 text-[15px] font-semibold">{day.getDate()}</span>
+                  {hasPurchases && !selected ? (
+                    <span className="mt-1 h-1 w-1 rounded-full bg-hrc-800" />
+                  ) : (
+                    <span className="mt-1 h-1 w-1" />
+                  )}
+                </button>
+              )
+            })}
+          </div>
+
+          <section className="mt-6">
+            <h2 className="text-[18px] font-bold text-ink-950">Day summary</h2>
+            <div className="mt-3 rounded-[24px] bg-white px-4 py-4 shadow-[0_8px_24px_rgb(28_25_23/0.04)]">
+              <div className="grid grid-cols-3 gap-2">
+                <SummaryStat icon={Package} label="Items" value={String(stats.items)} />
+                <SummaryStat icon={IndianRupee} label="Spend" value={formatCurrency(stats.total)} />
+                <SummaryStat icon={Sprout} label="Crops" value={String(stats.crops)} />
+              </div>
+            </div>
+          </section>
+
+          <section className="mt-6">
+            <div className="mb-3 flex items-end justify-between gap-3">
+              <h2 className="text-[18px] font-bold text-ink-950">Products</h2>
+              <p className="text-sm font-medium text-ink-500">
+                {stats.items ? `${stats.items} ${stats.items === 1 ? 'item' : 'items'}` : 'No items'}
+              </p>
+            </div>
+
+            {dayPurchases.length ? (
+              <div className="space-y-3">
+                {dayPurchases.map((purchase, index) => {
+                  const product = getCatalogueProduct(purchase.catalogueId)
+                  return (
+                    <Link
+                      key={purchase.id}
+                      to={`/purchases/${purchase.id}`}
+                      className="flex items-center gap-3 rounded-[22px] bg-white p-3 shadow-[0_8px_24px_rgb(28_25_23/0.04)]"
+                    >
+                      <span
+                        className="h-14 w-14 shrink-0 rounded-2xl bg-cover bg-center"
+                        style={{ backgroundImage: `url(${product?.image || ''})` }}
+                      />
+                      <span className="min-w-0 flex-1">
+                        <span className="block text-[11px] font-medium uppercase tracking-wide text-ink-400">
+                          Item {index + 1}
+                        </span>
+                        <span className="mt-0.5 block truncate text-[15px] font-semibold text-ink-950">
+                          {purchase.productName}
+                        </span>
+                        <span className="mt-0.5 block text-sm text-ink-500">
+                          {purchase.quantityLabel} · {purchase.cropName}
+                        </span>
+                      </span>
+                      <span className="shrink-0 text-sm font-semibold text-ink-700">
+                        {formatCurrency(purchase.amount)}
+                      </span>
+                    </Link>
+                  )
+                })}
+              </div>
+            ) : (
+              <EmptyState
+                icon={ShoppingBag}
+                title="No purchases this day"
+                description="Pick another date to see what was collected from HRC."
+                className="border-0 shadow-[0_8px_24px_rgb(28_25_23/0.04)]"
+              />
+            )}
+          </section>
+        </div>
       )}
     </div>
   )

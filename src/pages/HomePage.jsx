@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowUpRight, Bell, Mail, MapPin, Phone } from 'lucide-react'
+import { ArrowUpRight, Bell, Mail, MapPin, Phone, Receipt } from 'lucide-react'
 import { HomeServiceTile } from '../components/home/HomeServiceTile'
 import { currentFarmer, notifications } from '../data'
 import { cropOptions } from '../data/cropTimes'
@@ -63,6 +63,12 @@ export function HomePage() {
               <ArrowUpRight className="h-5 w-5 text-ink-950" />
             </span>
             <span className="text-[12px] font-medium text-ink-700">Purchases</span>
+          </Link>
+          <Link to="/purchases?view=bills" className="flex flex-col items-center gap-2">
+            <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-[0_8px_20px_rgb(28_25_23/0.08)]">
+              <Receipt className="h-5 w-5 text-ink-950" />
+            </span>
+            <span className="text-[12px] font-medium text-ink-700">My Bills</span>
           </Link>
         </div>
       </section>
