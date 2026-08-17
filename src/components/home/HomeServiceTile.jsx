@@ -103,9 +103,8 @@ export function HomeServiceTile({ item, selected, onSelect }) {
     >
       <span
         className={cn(
-          'relative flex h-[58px] w-[58px] items-center justify-center overflow-hidden rounded-[22px] bg-gradient-to-b shadow-[0_10px_18px_rgb(28_25_23/0.12)]',
+          'relative flex h-[58px] w-[58px] items-center justify-center overflow-hidden rounded-full bg-gradient-to-b',
           tone.wrap,
-          selected && 'ring-2 ring-ink-950 ring-offset-2',
         )}
       >
         {item.image ? (
@@ -126,7 +125,12 @@ export function HomeServiceTile({ item, selected, onSelect }) {
           </>
         )}
       </span>
-      <span className="max-w-[72px] text-[11px] font-medium leading-4 text-ink-700">
+      <span
+        className={cn(
+          'max-w-[72px] text-[11px] font-medium leading-4',
+          selected ? 'text-ink-950' : 'text-ink-700',
+        )}
+      >
         {item.label}
       </span>
     </button>

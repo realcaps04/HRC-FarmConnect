@@ -7,7 +7,7 @@ export function HrcLogo({ compact = false }) {
       <span
         className={cn(
           'flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-white shadow-[0_2px_8px_rgb(28_25_23/0.08)]',
-          compact ? 'h-9 w-9 p-0.5' : 'h-10 w-10 p-0.5',
+          compact ? 'h-11 w-11 p-1' : 'h-12 w-12 p-1',
         )}
       >
         <img

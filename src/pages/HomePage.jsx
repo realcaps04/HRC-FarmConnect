@@ -9,7 +9,7 @@ import {
   currentFarmer,
   notifications,
 } from '../data'
-import { cropTimes, getCropOption, getCropTime, cropOptions } from '../data/cropTimes'
+import { cropOptions } from '../data/cropTimes'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
 import { useToast } from '../hooks/useToast'
 import { greeting } from '../utils/format'
@@ -18,11 +18,8 @@ export function HomePage() {
   useDocumentTitle('Home')
   const { showToast } = useToast()
   const [cropId, setCropId] = useState('crop-cardamom')
-  const [timeId, setTimeId] = useState('time-monsoon')
   const unread = notifications.some((item) => item.unread)
 
-  const crop = getCropOption(cropId)
-  const time = getCropTime(timeId)
   const farmCrops = crops
   const promos = useMemo(
     () => adviceArticles.filter((article) => article.cropName === 'Cardamom').slice(0, 3),
@@ -30,24 +27,23 @@ export function HomePage() {
   )
 
   const selectItem = (item) => {
-    if (item.kind === 'crop') {
-      setCropId(item.id)
-      showToast(`${item.label} selected`)
-      return
-    }
-    setTimeId(item.id)
-    showToast(`${crop?.label || 'Crop'} · ${item.label}`)
+    setCropId(item.id)
+    showToast(`${item.label} selected`)
   }
 
   return (
     <div className="overflow-x-hidden pb-2">
-      <header className="relative mb-4 flex h-12 items-center justify-between">
+      <header className="relative mb-4 flex h-16 items-center justify-between">
         <Link
           to="/"
-          className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white p-1 shadow-[0_4px_12px_rgb(28_25_23/0.08)]"
-          aria-label="HRC FarmConnect home"
+          className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white p-1.5 shadow-[0_4px_12px_rgb(28_25_23/0.08)]"
+          aria-label="Horti Research Centre LLP"
         >
-          <img src="/hrc-logo.png" alt="Horti Research Centre LLP" className="h-full w-full object-contain" />
+          <img
+            src="/hrc-logo.png"
+            alt="Horti Research Centre LLP"
+            className="h-full w-full object-contain"
+          />
         </Link>
         <Link
           to="/notifications"
@@ -65,12 +61,12 @@ export function HomePage() {
         <div>
           <p className="text-[13px] text-ink-500">{greeting()}</p>
           <p className="mt-1 text-[34px] font-bold leading-none tracking-tight text-ink-950">
-            Cardamom
+            {currentFarmer.fullName}
           </p>
-          <p className="mt-2 text-sm font-medium text-hrc-800">{time?.label || 'Monsoon'}</p>
+          <p className="mt-2 text-sm font-medium text-hrc-800">{currentFarmer.address}</p>
         </div>
 
-        <p className="mt-3 text-xs text-ink-500">{currentFarmer.address}</p>
+        <p className="mt-3 text-xs text-ink-500">{currentFarmer.customerSinceLabel}</p>
 
         <div className="mt-6 flex gap-10 px-2">
           <Link to="/purchases" className="flex flex-col items-center gap-2">
@@ -94,19 +90,6 @@ export function HomePage() {
               key={item.id}
               item={item}
               selected={item.id === cropId}
-              onSelect={selectItem}
-            />
-          ))}
-        </div>
-        <p className="mb-3 mt-5 px-2 text-[12px] font-semibold uppercase tracking-wide text-ink-400">
-          Crop time
-        </p>
-        <div className="grid grid-cols-4 gap-y-5">
-          {cropTimes.map((item) => (
-            <HomeServiceTile
-              key={item.id}
-              item={item}
-              selected={item.id === timeId}
               onSelect={selectItem}
             />
           ))}
@@ -141,7 +124,7 @@ export function HomePage() {
           ))}
         </div>
         <p className="mt-3 text-xs text-ink-400">
-          Hello {currentFarmer.firstName} — tap a crop or a season above to set the home view.
+          Hello {currentFarmer.firstName} — tap a crop above to set the home view.
         </p>
       </section>
     </div>

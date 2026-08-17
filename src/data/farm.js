@@ -25,7 +25,7 @@ export const images = {
 
 export const farm = {
   id: 'farm-1',
-  name: "Joseph's Cardamom Farm",
+  name: "Edison's Cardamom Farm",
   location: 'Thopramkudy',
   landmark: 'Mullappallil, Idukki',
   totalAcres: 3.5,
