@@ -1,198 +1,173 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowDownLeft, ArrowUpRight, Bell, ChevronLeft } from 'lucide-react'
-import { HomePromoCard } from '../components/home/HomePromoCard'
-import { HomeServiceTile } from '../components/home/HomeServiceTile'
-import { BottomSheet } from '../components/ui/BottomSheet'
-import { Modal } from '../components/ui/Modal'
-import {
-  adviceArticles,
-  crops,
-  currentFarmer,
-  notifications,
-  recommendations,
-} from '../data'
-import { cropTimes, getCropOption, getCropTime, homeGridItems } from '../data/cropTimes'
-import { useIsDesktop } from '../hooks/useMediaQuery'
+import { ChevronLeft, ChevronRight, Clock, Droplets, Leaf, Sprout } from 'lucide-react'
+import { Button } from '../components/ui/Button'
+import { EmptyState } from '../components/ui/EmptyState'
+import { currentFarmer, farm } from '../data'
+import { getScheduleForDate } from '../data/schedule'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
-import { useToast } from '../hooks/useToast'
 import { cn } from '../utils/cn'
-import { formatDate } from '../utils/format'
+import {
+  addDays,
+  formatAcres,
+  monthYear,
+  toDateKey,
+  weekdayShort,
+} from '../utils/format'
+
+function parseMinutes(label) {
+  const match = String(label).match(/(\d+)/)
+  return match ? Number(match[1]) : 0
+}
 
 export function HomePage() {
-  useDocumentTitle('Home')
+  useDocumentTitle('Farm Schedule')
   const { showToast } = useToast()
-  const isDesktop = useIsDesktop()
-  const [cropId, setCropId] = useState('crop-cardamom')
-  const [timeId, setTimeId] = useState('time-monsoon')
-  const [pickerOpen, setPickerOpen] = useState(false)
-  const unread = notifications.some((item) => item.unread)
+  const [selected, setSelected] = useState(() => new Date(2026, 7, 17))
 
-  const crop = getCropOption(cropId)
-  const time = getCropTime(timeId)
-  const nextDue = recommendations[0]
-  const farmCrops = crops
-  const promos = useMemo(() => adviceArticles.slice(0, 3), [])
+  const selectedKey = toDateKey(selected)
+  const tasks = getScheduleForDate(selectedKey)
+  const weekStart = addDays(selected, -3)
+  const days = Array.from({ length: 7 }, (_, index) => addDays(weekStart, index))
+  const totalMinutes = tasks.reduce((sum, item) => sum + parseMinutes(item.duration), 0)
 
-  const selectItem = (item) => {
-    if (item.kind === 'crop') {
-      setCropId(item.id)
-      showToast(`${item.label} selected`)
-      return
-    }
-    setTimeId(item.id)
-    showToast(`${crop?.label || 'Crop'} · ${item.label}`)
-  }
-
-  const setTimeFromPicker = (item) => {
-    setTimeId(item.id)
-    setPickerOpen(false)
-    showToast(`${crop?.label || 'Crop'} · ${item.label}`)
-  }
-
-  const picker = (
-    <div className="grid grid-cols-2 gap-2">
-      {cropTimes.map((item) => (
-        <button
-          key={item.id}
-          type="button"
-          onClick={() => setTimeFromPicker(item)}
-          className={cn(
-            'rounded-2xl border px-4 py-3 text-left transition-colors',
-            item.id === timeId
-              ? 'border-ink-950 bg-ink-950 text-white'
-              : 'border-sand-200 bg-white hover:bg-sand-50',
-          )}
-        >
-          <span className="block text-sm font-semibold">{item.label}</span>
-          <span
-            className={cn(
-              'mt-1 block text-xs leading-4',
-              item.id === timeId ? 'text-white/70' : 'text-ink-500',
-            )}
-          >
-            {item.note}
-          </span>
-        </button>
-      ))}
-    </div>
+  const stats = useMemo(
+    () => [
+      { icon: Sprout, label: 'Acreage', value: formatAcres(farm.totalAcres) },
+      { icon: Clock, label: 'Duration', value: totalMinutes ? `${totalMinutes} min` : '—' },
+      { icon: Leaf, label: 'Crop', value: currentFarmer.mainCrop },
+    ],
+    [totalMinutes],
   )
 
   return (
-    <div className="pb-2">
-      <header className="relative mb-4 flex h-12 items-center justify-center">
-        <Link
-          to="/profile"
-          className="absolute left-0 flex h-10 w-10 items-center justify-center rounded-full text-ink-950"
-          aria-label="Profile"
-        >
-          <ChevronLeft className="h-6 w-6" />
-        </Link>
-        <img src="/hrc-logo.png" alt="HRC" className="h-11 w-11 object-contain" />
-        <Link
-          to="/notifications"
-          className="absolute right-0 flex h-10 w-10 items-center justify-center rounded-full text-ink-950"
-          aria-label="Notifications"
-        >
-          <Bell className="h-5 w-5" />
-          {unread ? (
-            <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-hrc-700" />
-          ) : null}
-        </Link>
-      </header>
+    <div className="bg-sand-50">
+      <section className="bg-[radial-gradient(120%_90%_at_50%_-10%,#3a6b5c_0%,#2d5a4d_46%,#1e4a3e_100%)] px-5 pb-8 pt-3 text-white">
+        <header className="relative mb-6 flex h-11 items-center justify-center">
+          <Link
+            to="/profile"
+            className="absolute left-0 flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-white"
+            aria-label="Back to profile"
+          >
+            <ChevronLeft className="h-5 w-5" />
+          </Link>
+          <h1 className="text-[17px] font-semibold tracking-tight">Farm Schedule</h1>
+        </header>
 
-      <section className="overflow-hidden rounded-[32px] bg-gradient-to-b from-[#d8f3e4] via-[#eefaf3] to-white p-5 shadow-[0_12px_30px_rgb(47_158_95/0.08)]">
-        <div className="flex items-start justify-between gap-3">
-          <div>
-            <p className="text-[13px] text-ink-500">Current crop time</p>
-            <p className="mt-1 text-[34px] font-bold leading-none tracking-tight text-ink-950">
-              {crop?.label || 'Cardamom'}
-            </p>
-            <p className="mt-2 text-sm font-medium text-hrc-800">{time?.label || 'Monsoon'}</p>
-          </div>
+        <div className="mb-5 flex items-center justify-center gap-5 text-[15px] font-medium">
           <button
             type="button"
-            onClick={() => setPickerOpen(true)}
-            className="mt-1 inline-flex h-10 shrink-0 items-center rounded-full bg-ink-950 px-4 text-[13px] font-semibold text-white"
+            className="text-white/80"
+            aria-label="Previous week"
+            onClick={() => setSelected(addDays(selected, -7))}
           >
-            + Choose time
+            <ChevronLeft className="h-4 w-4" />
+          </button>
+          <p>{monthYear(selected)}</p>
+          <button
+            type="button"
+            className="text-white/80"
+            aria-label="Next week"
+            onClick={() => setSelected(addDays(selected, 7))}
+          >
+            <ChevronRight className="h-4 w-4" />
           </button>
         </div>
 
-        {nextDue ? (
-          <p className="mt-3 text-xs text-ink-500">
-            Next HRC note · {nextDue.productName} · {formatDate(nextDue.dueOn)}
+        <div className="flex justify-between gap-2">
+          {days.map((day) => {
+            const active = toDateKey(day) === selectedKey
+            return (
+              <button
+                key={toDateKey(day)}
+                type="button"
+                onClick={() => setSelected(day)}
+                className={cn(
+                  'flex h-[72px] min-w-0 flex-1 flex-col items-center justify-center rounded-full text-[11px] font-medium transition-colors',
+                  active
+                    ? 'bg-hrc-950 text-white shadow-[0_8px_16px_rgb(16_40_32/0.28)]'
+                    : 'bg-white text-ink-950',
+                )}
+              >
+                <span className={cn('text-[10px]', active ? 'text-white/80' : 'text-ink-400')}>
+                  {weekdayShort(day)}
+                </span>
+                <span className="mt-1 text-[15px] font-semibold leading-none">{day.getDate()}</span>
+              </button>
+            )
+          })}
+        </div>
+      </section>
+
+      <section className="px-5 pt-5">
+        <div className="grid grid-cols-3 rounded-[28px] bg-white px-2 py-4 shadow-[0_8px_24px_rgb(17_17_17/0.04)]">
+          {stats.map((item) => (
+            <div key={item.label} className="flex flex-col items-center gap-1.5 text-center">
+              <item.icon className="h-4 w-4 text-hrc-800" />
+              <p className="text-[11px] text-ink-400">{item.label}</p>
+              <p className="text-sm font-bold text-ink-950">{item.value}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="px-5 pt-7">
+        <div className="mb-4 flex items-end justify-between gap-3">
+          <h2 className="text-[20px] font-bold tracking-tight text-ink-950">
+            {currentFarmer.mainCrop} care
+          </h2>
+          <p className="inline-flex items-center gap-1 text-sm text-ink-400">
+            <Clock className="h-3.5 w-3.5" />
+            {totalMinutes ? `${totalMinutes} mins` : 'No tasks'}
           </p>
-        ) : null}
-
-        <div className="mt-6 flex gap-10 px-2">
-          <Link to="/applications" className="flex flex-col items-center gap-2">
-            <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-[0_8px_20px_rgb(28_25_23/0.08)]">
-              <ArrowUpRight className="h-5 w-5 text-ink-950" />
-            </span>
-            <span className="text-[12px] font-medium text-ink-700">Log use</span>
-          </Link>
-          <Link to="/farm" className="flex flex-col items-center gap-2">
-            <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-[0_8px_20px_rgb(28_25_23/0.08)]">
-              <ArrowDownLeft className="h-5 w-5 text-ink-950" />
-            </span>
-            <span className="text-[12px] font-medium text-ink-700">My farm</span>
-          </Link>
         </div>
+
+        {tasks.length ? (
+          <div className="space-y-3">
+            {tasks.map((item) => (
+              <Link
+                key={item.id}
+                to={item.href}
+                className="flex items-center gap-3 rounded-[22px] bg-white p-3 shadow-[0_8px_24px_rgb(17_17_17/0.04)]"
+              >
+                <span
+                  className="h-14 w-14 shrink-0 rounded-[16px] bg-cover bg-center"
+                  style={{ backgroundImage: `url(${item.image})` }}
+                />
+                <span className="min-w-0 flex-1">
+                  <span className="block text-[11px] text-ink-400">{item.part}</span>
+                  <span className="mt-0.5 block truncate text-[15px] font-bold text-ink-950">
+                    {item.title}
+                  </span>
+                  <span className="mt-0.5 block truncate text-[12px] text-ink-500">
+                    {item.detail}
+                  </span>
+                </span>
+                <span className="shrink-0 text-[12px] text-ink-400">{item.duration}</span>
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <EmptyState
+            icon={Droplets}
+            title="No work on this day"
+            description="Choose another date, or log an application when you use a product."
+          />
+        )}
       </section>
 
-      <section className="mt-4 rounded-[32px] bg-white px-3 py-5 shadow-[0_8px_24px_rgb(28_25_23/0.04)]">
-        <div className="grid grid-cols-4 gap-y-5">
-          {homeGridItems.map((item) => (
-            <HomeServiceTile
-              key={item.id}
-              item={item}
-              selected={item.id === cropId || item.id === timeId}
-              onSelect={selectItem}
-            />
-          ))}
-        </div>
-      </section>
-
-      <section className="mt-5">
-        <div className="flex gap-3 overflow-x-auto pb-1 scrollbar-none">
-          {promos.map((article) => (
-            <HomePromoCard key={article.id} article={article} />
-          ))}
-        </div>
-      </section>
-
-      <section className="mt-6">
-        <h2 className="text-[18px] font-bold text-ink-950">Your crops</h2>
-        <div className="mt-4 flex gap-4 overflow-x-auto pb-2 scrollbar-none">
-          {farmCrops.map((item) => (
-            <Link
-              key={item.id}
-              to={`/farm/crops/${item.id}`}
-              className="flex w-20 shrink-0 flex-col items-center gap-2"
-            >
-              <span
-                className="h-16 w-16 rounded-full bg-cover bg-center ring-4 ring-white shadow-[0_8px_18px_rgb(28_25_23/0.08)]"
-                style={{ backgroundImage: `url(${item.image})` }}
-              />
-              <span className="text-[12px] font-medium text-ink-700">{item.name}</span>
-            </Link>
-          ))}
-        </div>
-        <p className="mt-3 text-xs text-ink-400">
-          Hello {currentFarmer.firstName} — tap a crop or a season above to set the home view.
+      <section className="px-5 pb-4 pt-8">
+        <Button
+          as={Link}
+          to="/applications"
+          className="h-14 w-full bg-hrc-800 text-[16px] font-semibold hover:bg-hrc-900"
+        >
+          Log application
+        </Button>
+        <p className="mt-3 text-center text-[12px] text-ink-400">
+          You can add notes after saving. Always follow the latest HRC recommendation.
         </p>
       </section>
-
-      {isDesktop ? (
-        <Modal open={pickerOpen} onClose={() => setPickerOpen(false)} title="Choose crop time">
-          {picker}
-        </Modal>
-      ) : (
-        <BottomSheet open={pickerOpen} onClose={() => setPickerOpen(false)} title="Choose crop time">
-          {picker}
-        </BottomSheet>
-      )}
     </div>
   )
 }

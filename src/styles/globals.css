@@ -3,23 +3,23 @@
 @theme {
   --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
 
-  --color-hrc-950: #10261d;
-  --color-hrc-900: #1a4a38;
-  --color-hrc-800: #215744;
-  --color-hrc-700: #2d6a54;
-  --color-hrc-600: #3d7d64;
-  --color-hrc-500: #4f9276;
-  --color-hrc-100: #e4efe8;
-  --color-hrc-50: #f0f6f3;
+  --color-hrc-950: #16352d;
+  --color-hrc-900: #1e4a3e;
+  --color-hrc-800: #2d5a4d;
+  --color-hrc-700: #3a6b5c;
+  --color-hrc-600: #4a7d6c;
+  --color-hrc-500: #5f9180;
+  --color-hrc-100: #dce8e4;
+  --color-hrc-50: #eef4f2;
 
-  --color-sand-50: #f4f1eb;
-  --color-sand-100: #ebe6dc;
-  --color-sand-200: #e0d9cc;
-  --color-ink-950: #1c1917;
-  --color-ink-700: #44403c;
-  --color-ink-500: #6b6560;
-  --color-ink-400: #8a8378;
-  --color-ink-300: #a8a29e;
+  --color-sand-50: #f5f5f5;
+  --color-sand-100: #ececec;
+  --color-sand-200: #e2e2e2;
+  --color-ink-950: #111111;
+  --color-ink-700: #3d3d3d;
+  --color-ink-500: #7a7a7a;
+  --color-ink-400: #9a9a9a;
+  --color-ink-300: #b8b8b8;
 
   --color-gold-600: #9a7043;
   --color-gold-500: #c4a574;
@@ -112,7 +112,7 @@ textarea {
 }
 
 .skeleton {
-  background: linear-gradient(90deg, #ebe6dc 0%, #f7f4ee 50%, #ebe6dc 100%);
+  background: linear-gradient(90deg, #ececec 0%, #f7f7f7 50%, #ececec 100%);
   background-size: 200% 100%;
   animation: shimmer 1.4s ease-in-out infinite;
 }

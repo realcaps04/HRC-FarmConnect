@@ -55,6 +55,28 @@ export function timeAgo(value, now = new Date()) {
   return formatDate(date)
 }
 
+export function weekdayShort(value) {
+  return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][parseDate(value).getDay()]
+}
+
+export function monthYear(value) {
+  const date = parseDate(value)
+  return `${LONG_MONTHS[date.getMonth()]} ${date.getFullYear()}`
+}
+
+export function toDateKey(value) {
+  const date = parseDate(value)
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${date.getFullYear()}-${month}-${day}`
+}
+
+export function addDays(value, amount) {
+  const date = parseDate(value)
+  date.setDate(date.getDate() + amount)
+  return date
+}
+
 export function formatAcres(acres) {
   if (acres == null) return 'Homestead plot'
   const label = Number.isInteger(acres) ? String(acres) : acres.toFixed(1)

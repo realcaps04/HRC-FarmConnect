@@ -43,7 +43,7 @@ export function MobileBottomNav() {
                 const active = item.to === '/more' ? isMorePath(pathname) : isActive
                 return cn(
                   'flex h-[3.75rem] flex-col items-center justify-center gap-1 text-[11px] font-medium transition-colors',
-                  active ? 'text-hrc-900' : 'text-ink-400',
+                  active ? 'text-hrc-800' : 'text-ink-400',
                 )
               }}
             >
