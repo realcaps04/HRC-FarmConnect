@@ -14,6 +14,7 @@ import { NotFoundPage } from '../pages/NotFoundPage'
 import { NotificationsPage } from '../pages/NotificationsPage'
 import { ProductDetailsPage } from '../pages/ProductDetailsPage'
 import { ProductsPage } from '../pages/ProductsPage'
+import { ProfilePage } from '../pages/ProfilePage'
 import { PurchaseDetailsPage } from '../pages/PurchaseDetailsPage'
 import { PurchasesPage } from '../pages/PurchasesPage'
 import { SearchPage } from '../pages/SearchPage'
@@ -41,7 +42,7 @@ export function AppRoutes() {
         <Route path="/catalogue" element={<CataloguePage />} />
         <Route path="/catalogue/:id" element={<CatalogueProductPage />} />
         <Route path="/notifications" element={<NotificationsPage />} />
-        <Route path="/profile" element={<Navigate to="/" replace />} />
+        <Route path="/profile" element={<ProfilePage />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/more" element={<MorePage />} />
         <Route path="/search" element={<SearchPage />} />

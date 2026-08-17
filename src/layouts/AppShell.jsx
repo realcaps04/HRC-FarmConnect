@@ -16,6 +16,7 @@ const titles = {
   '/notifications': 'Notifications',
   '/settings': 'Settings',
   '/more': 'More',
+  '/profile': 'Profile',
   '/search': 'Search',
 }
 

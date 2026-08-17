@@ -86,8 +86,7 @@ export function HomePage() {
       </section>
 
       <section className="mt-4 rounded-[32px] bg-white px-5 py-5 shadow-[0_8px_24px_rgb(28_25_23/0.04)]">
-        <p className="text-[12px] font-semibold uppercase tracking-wide text-ink-400">Shop</p>
-        <p className="mt-3 text-[16px] font-semibold tracking-tight text-ink-950">{shop.name}</p>
+        <p className="text-[16px] font-semibold tracking-tight text-ink-950">{shop.name}</p>
         <p className="mt-2 flex gap-2 text-sm leading-6 text-ink-700">
           <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-hrc-800" />
           <span>
