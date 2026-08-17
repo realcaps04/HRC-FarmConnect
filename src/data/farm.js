@@ -66,7 +66,7 @@ export const crops = [
     acres: 2.5,
     variety: 'Njallani',
     plots: ['Plot 1', 'Plot 2'],
-    image: images.cardamom,
+    image: '/crops/cardamom-plant.png',
     accent: '#1a4a38',
     summary: 'Main crop on the mid and upper slopes, grown under mixed shade.',
   },

@@ -5,6 +5,8 @@ export const cropOptions = [
     kind: 'crop',
     tone: 'green',
     href: '/farm/crops/crop-cardamom',
+    image: '/crops/cardamom-plant.png',
+    visible: true,
   },
   {
     id: 'crop-pepper',
@@ -12,6 +14,7 @@ export const cropOptions = [
     kind: 'crop',
     tone: 'brown',
     href: '/farm/crops/crop-pepper',
+    visible: false,
   },
   {
     id: 'crop-vegetables',
@@ -19,6 +22,7 @@ export const cropOptions = [
     kind: 'crop',
     tone: 'orange',
     href: '/products',
+    visible: false,
   },
   {
     id: 'crop-all',
@@ -26,6 +30,7 @@ export const cropOptions = [
     kind: 'crop',
     tone: 'teal',
     href: '/farm',
+    visible: false,
   },
 ]
 
@@ -88,7 +93,7 @@ export const cropTimes = [
   },
 ]
 
-export const homeGridItems = [...cropOptions, ...cropTimes]
+export const homeGridItems = [...cropOptions.filter((item) => item.visible !== false), ...cropTimes]
 
 export function getCropOption(id) {
   return cropOptions.find((item) => item.id === id)

@@ -8,7 +8,10 @@ export function HomePromoCard({ article }) {
         style={{ backgroundImage: `url(${article.image})` }}
       />
       <div className="relative max-w-[70%]">
-        <h3 className="text-[17px] font-bold leading-6 text-ink-950">{article.title}</h3>
+        <p className="text-[11px] font-semibold uppercase tracking-wide text-hrc-800">
+          {article.cropName} · {article.category}
+        </p>
+        <h3 className="mt-1 text-[17px] font-bold leading-6 text-ink-950">{article.title}</h3>
         <p className="mt-2 line-clamp-2 text-[12px] leading-5 text-ink-500">{article.excerpt}</p>
         <Link
           to={`/advice/${article.id}`}

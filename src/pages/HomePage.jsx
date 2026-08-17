@@ -12,7 +12,7 @@ import {
   notifications,
   recommendations,
 } from '../data'
-import { cropTimes, getCropOption, getCropTime, homeGridItems } from '../data/cropTimes'
+import { cropTimes, getCropOption, getCropTime, cropOptions } from '../data/cropTimes'
 import { useIsDesktop } from '../hooks/useMediaQuery'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
 import { useToast } from '../hooks/useToast'
@@ -32,7 +32,10 @@ export function HomePage() {
   const time = getCropTime(timeId)
   const nextDue = recommendations[0]
   const farmCrops = crops
-  const promos = useMemo(() => adviceArticles.slice(0, 3), [])
+  const promos = useMemo(
+    () => adviceArticles.filter((article) => article.cropName === 'Cardamom').slice(0, 3),
+    [],
+  )
 
   const selectItem = (item) => {
     if (item.kind === 'crop') {
@@ -141,12 +144,30 @@ export function HomePage() {
       </section>
 
       <section className="mt-4 rounded-[32px] bg-white px-3 py-5 shadow-[0_8px_24px_rgb(28_25_23/0.04)]">
+        <p className="mb-3 px-2 text-[12px] font-semibold uppercase tracking-wide text-ink-400">
+          Crops
+        </p>
         <div className="grid grid-cols-4 gap-y-5">
-          {homeGridItems.map((item) => (
+          {cropOptions
+            .filter((item) => item.visible !== false)
+            .map((item) => (
             <HomeServiceTile
               key={item.id}
               item={item}
-              selected={item.id === cropId || item.id === timeId}
+              selected={item.id === cropId}
+              onSelect={selectItem}
+            />
+          ))}
+        </div>
+        <p className="mb-3 mt-5 px-2 text-[12px] font-semibold uppercase tracking-wide text-ink-400">
+          Crop time
+        </p>
+        <div className="grid grid-cols-4 gap-y-5">
+          {cropTimes.map((item) => (
+            <HomeServiceTile
+              key={item.id}
+              item={item}
+              selected={item.id === timeId}
               onSelect={selectItem}
             />
           ))}
@@ -164,7 +185,9 @@ export function HomePage() {
       <section className="mt-6">
         <h2 className="text-[18px] font-bold text-ink-950">Your crops</h2>
         <div className="mt-4 flex gap-4 overflow-x-auto pb-2 scrollbar-none">
-          {farmCrops.map((item) => (
+          {farmCrops
+            .filter((item) => item.id === 'crop-cardamom')
+            .map((item) => (
             <Link
               key={item.id}
               to={`/farm/crops/${item.id}`}
